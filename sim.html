@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Admin - CFM Actualizações</title>
+  <title>Actualizações Comboio Beira / Moatize</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -543,8 +543,8 @@
   <div id="loginScreen" class="screen active">
     <div class="card">
       <header>
-        <h1><i class="fas fa-lock"></i> Login Administrativo</h1>
-        <p class="subtitle">Painel de Administração CFM</p>
+        <h1><i class="fas fa-lock"></i> Login Actualizações</h1>
+        <p class="subtitle">Painel de Actualização</p>
       </header>
       
       <div class="form-group">
@@ -747,7 +747,7 @@
         
         <button class="btn btn-secondary" onclick="loadUsers()">
           <i class="fas fa-sync-alt"></i>
-          Atualizar Lista
+          Actualizar Lista
           <div class="loader" id="usersLoader"></div>
         </button>
         
@@ -1095,7 +1095,7 @@
       try {
         // Formatar mensagem para WhatsApp
         const whatsappMessage = encodeURIComponent(
-          `*ATUALIZAÇÃO OFICIAL - CFM*\n` +
+          `*ACTUALIZAÇÃO OFICIAL - CFM*\n` +
           `*De:* ${adminName}\n` +
           `*Data:* ${new Date().toLocaleString('pt-PT')}\n\n` +
           `${msg}\n\n` +
