@@ -844,14 +844,16 @@
   const statusEl = document.getElementById('loginStatus');
   const btn = document.querySelector('#loginScreen .btn');
 
+  console.log('🔐 Tentando login...', { identifier, password: '***' });
+
   // Validação
   if (!identifier || !password) {
     showStatus(statusEl, "Por favor, preencha todos os campos", false);
     return;
   }
   
-  if (password.length > 6) {
-    showStatus(statusEl, "Senha deve ter no máximo 6 caracteres", false);
+  if (password.length > 8) {
+    showStatus(statusEl, "Senha deve ter no máximo 8 caracteres", false);
     return;
   }
 
@@ -860,47 +862,54 @@
   statusEl.style.display = "none";
 
   try {
-    // Adicionar timestamp para evitar cache
-    const urlComTimestamp = GAS_URL + '?nocache=' + Date.now();
+    // 🔥 FORMATO CORRETO para o GAS
+    const params = new URLSearchParams();
+    params.append('action', 'login');
+    params.append('identifier', identifier);
+    params.append('password', password);
     
-    const formData = new URLSearchParams();
-    formData.append('action', 'login');
-    formData.append('identifier', identifier);
-    formData.append('password', password);
-    
-    console.log('Enviando para:', urlComTimestamp);
-    console.log('Dados:', { identifier, password: '***' });
+    console.log('📤 Enviando para GAS:', GAS_URL);
+    console.log('Dados enviados:', params.toString());
 
-    // Timeout de 10 segundos
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    // 🔥 ADICIONAR timestamp para evitar cache
+    const urlComCacheBust = GAS_URL + '?t=' + Date.now();
     
-    const response = await fetch(urlComTimestamp, {
+    const response = await fetch(urlComCacheBust, {
       method: 'POST',
-      body: formData,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
-      signal: controller.signal
+      body: params.toString(),
+      mode: 'cors',
+      credentials: 'omit'
     });
-    
-    clearTimeout(timeoutId);
-    
-    console.log('Status da resposta:', response.status, response.statusText);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+
+    console.log('📥 Resposta recebida. Status:', response.status, response.statusText);
+
+    // Verificar se é JSON
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await response.text();
+      console.error('❌ Resposta não é JSON:', text.substring(0, 200));
+      throw new Error(`Resposta inválida do servidor: ${response.status}`);
     }
-    
+
     const result = await response.json();
-    console.log('Resposta JSON:', result);
+    console.log('📊 Resposta JSON:', result);
 
     if (result.success) {
+      console.log('✅ Login bem-sucedido!');
+      console.log('Usuário:', result.user);
+      console.log('Token:', result.token?.substring(0, 20) + '...');
+      
       // Salvar sessão
       currentUser = result.user;
       authToken = result.token;
+      
       localStorage.setItem('cfm_auth_token', authToken);
       localStorage.setItem('cfm_user', JSON.stringify(currentUser));
+      
+      console.log('💾 Sessão salva no localStorage');
       
       // Limpar formulário
       document.getElementById('loginIdentifier').value = '';
@@ -908,28 +917,44 @@
       
       // Mostrar painel admin
       showAdminScreen();
+      
       showStatus(statusEl, "✅ Login realizado com sucesso!", true);
+      
+      // Carregar dados iniciais
+      setTimeout(() => {
+        loadUsers();
+        showTab('sendUpdate');
+      }, 500);
+      
     } else {
+      console.log('❌ Login falhou:', result.error);
       showStatus(statusEl, "❌ " + (result.error || "Credenciais inválidas"), false);
     }
-  } catch (e) {
-    console.error('Erro completo:', e);
     
-    let mensagemErro = "⚠️ Erro de conexão: ";
+  } catch (error) {
+    console.error('💥 ERRO COMPLETO:', error);
     
-    if (e.name === 'AbortError') {
-      mensagemErro += "Timeout (10 segundos)";
-    } else if (e.message.includes('Failed to fetch')) {
-      mensagemErro += "Não conseguiu conectar ao servidor.<br>";
-      mensagemErro += "Verifique:<br>";
-      mensagemErro += "1. URL: " + GAS_URL + "<br>";
-      mensagemErro += "2. Web App publicado<br>";
-      mensagemErro += "3. Conexão à internet";
+    let mensagem = "⚠️ Erro de conexão: ";
+    
+    if (error.name === 'AbortError') {
+      mensagem = "⏱️ Timeout: Servidor não respondeu em 10 segundos";
+    } else if (error.message.includes('Failed to fetch')) {
+      mensagem = `
+        🌐 Não conseguiu conectar ao servidor<br>
+        <strong>Problemas possíveis:</strong><br>
+        4. Sem conexão à internet
+      `;
+    } else if (error.message.includes('Resposta inválida')) {
+      mensagem = `📡 Servidor respondeu com erro: ${error.message}`;
     } else {
-      mensagemErro += e.message;
+      mensagem += error.message;
     }
     
-    showStatus(statusEl, mensagemErro, false);
+    showStatus(statusEl, mensagem, false);
+    
+    // Sugerir teste manual
+    console.log('💡 Sugestão: Teste manualmente abrindo:', GAS_URL + '?action=updates');
+    
   } finally {
     btn.disabled = false;
     loader.style.display = "none";
