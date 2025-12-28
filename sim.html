@@ -838,67 +838,103 @@
 
     // ========== FUNÇÕES DE LOGIN/LOGOUT ==========
     async function handleLogin() {
-      const identifier = document.getElementById('loginIdentifier').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
-      const loader = document.getElementById('loginLoader');
-      const statusEl = document.getElementById('loginStatus');
-      const btn = document.querySelector('#loginScreen .btn');
+  const identifier = document.getElementById('loginIdentifier').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const loader = document.getElementById('loginLoader');
+  const statusEl = document.getElementById('loginStatus');
+  const btn = document.querySelector('#loginScreen .btn');
 
-      // Validação
-      if (!identifier || !password) {
-        showStatus(statusEl, "Por favor, preencha todos os campos", false);
-        return;
-      }
-      
-      if (password.length > 6) {
-        showStatus(statusEl, "Senha deve ter no máximo 6 caracteres", false);
-        return;
-      }
+  // Validação
+  if (!identifier || !password) {
+    showStatus(statusEl, "Por favor, preencha todos os campos", false);
+    return;
+  }
+  
+  if (password.length > 6) {
+    showStatus(statusEl, "Senha deve ter no máximo 6 caracteres", false);
+    return;
+  }
 
-      btn.disabled = true;
-      loader.style.display = "block";
-      statusEl.style.display = "none";
+  btn.disabled = true;
+  loader.style.display = "block";
+  statusEl.style.display = "none";
 
-      try {
-        const formData = new URLSearchParams();
-        formData.append('action', 'login');
-        formData.append('identifier', identifier);
-        formData.append('password', password);
+  try {
+    // Adicionar timestamp para evitar cache
+    const urlComTimestamp = GAS_URL + '?nocache=' + Date.now();
+    
+    const formData = new URLSearchParams();
+    formData.append('action', 'login');
+    formData.append('identifier', identifier);
+    formData.append('password', password);
+    
+    console.log('Enviando para:', urlComTimestamp);
+    console.log('Dados:', { identifier, password: '***' });
 
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          // Salvar sessão
-          currentUser = result.user;
-          authToken = result.token;
-          localStorage.setItem('cfm_auth_token', authToken);
-          localStorage.setItem('cfm_user', JSON.stringify(currentUser));
-          
-          // Limpar formulário
-          document.getElementById('loginIdentifier').value = '';
-          document.getElementById('loginPassword').value = '';
-          
-          // Mostrar painel admin
-          showAdminScreen();
-          showStatus(statusEl, "✅ Login realizado com sucesso!", true);
-        } else {
-          showStatus(statusEl, "❌ " + (result.error || "Credenciais inválidas"), false);
-        }
-      } catch (e) {
-        showStatus(statusEl, "⚠️ Erro de conexão: " + e.message, false);
-      } finally {
-        btn.disabled = false;
-        loader.style.display = "none";
-      }
+    // Timeout de 10 segundos
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    
+    const response = await fetch(urlComTimestamp, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
+    console.log('Status da resposta:', response.status, response.statusText);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
+    
+    const result = await response.json();
+    console.log('Resposta JSON:', result);
+
+    if (result.success) {
+      // Salvar sessão
+      currentUser = result.user;
+      authToken = result.token;
+      localStorage.setItem('cfm_auth_token', authToken);
+      localStorage.setItem('cfm_user', JSON.stringify(currentUser));
+      
+      // Limpar formulário
+      document.getElementById('loginIdentifier').value = '';
+      document.getElementById('loginPassword').value = '';
+      
+      // Mostrar painel admin
+      showAdminScreen();
+      showStatus(statusEl, "✅ Login realizado com sucesso!", true);
+    } else {
+      showStatus(statusEl, "❌ " + (result.error || "Credenciais inválidas"), false);
+    }
+  } catch (e) {
+    console.error('Erro completo:', e);
+    
+    let mensagemErro = "⚠️ Erro de conexão: ";
+    
+    if (e.name === 'AbortError') {
+      mensagemErro += "Timeout (10 segundos)";
+    } else if (e.message.includes('Failed to fetch')) {
+      mensagemErro += "Não conseguiu conectar ao servidor.<br>";
+      mensagemErro += "Verifique:<br>";
+      mensagemErro += "1. URL: " + GAS_URL + "<br>";
+      mensagemErro += "2. Web App publicado<br>";
+      mensagemErro += "3. Conexão à internet";
+    } else {
+      mensagemErro += e.message;
+    }
+    
+    showStatus(statusEl, mensagemErro, false);
+  } finally {
+    btn.disabled = false;
+    loader.style.display = "none";
+  }
+}
 
     function handleLogout() {
       if (confirm("Tem certeza que deseja sair?")) {
