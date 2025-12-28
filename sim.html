@@ -3,137 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CFM Atualizações - Sistema de Cadastro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="apple-touch-icon" href="./icon-192.png">
+  <title>Painel Admin - CFM Actualizações</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* ============================================
-       ESTILOS DA PÁGINA DE CADASTRO
-       ============================================ */
-    .capa {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.8s ease;
-      z-index: 10000;
-    }
-    
-    .capa.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    
-    .card {
-      background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
-      backdrop-filter: blur(14px);
-      padding: 30px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 25px 45px rgba(0,0,0,0.4);
-      animation: surgir 1s ease;
-    }
-    
-    @keyframes surgir {
-      from { opacity:0; transform: translateY(25px); }
-      to { opacity:1; transform: translateY(0); }
-    }
-    
-    .capa h1 {
-      text-align:center;
-      font-size:20px;
-      margin-bottom:8px;
-      font-family: 'Poppins', sans-serif;
-    }
-    
-    .capa p {
-      text-align:center;
-      font-size:13px;
-      opacity:0.85;
-      font-family: 'Poppins', sans-serif;
-    }
-    
-    .capa input {
-      width:100%;
-      margin-top:14px;
-      padding:12px;
-      border-radius:10px;
-      border:none;
-      outline:none;
-      background: rgba(255,255,255,0.12);
-      color:#fff;
-      font-family: 'Poppins', sans-serif;
-    }
-    
-    .capa input::placeholder {
-      color:#ccc;
-    }
-    
-    .capa button {
-      width:100%;
-      margin-top:20px;
-      padding:12px;
-      border-radius:30px;
-      border:none;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      color:#fff;
-      font-size:15px;
-      cursor:pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      font-family: 'Poppins', sans-serif;
-    }
-    
-    .capa button:hover {
-      transform: scale(1.04);
-      box-shadow:0 12px 30px rgba(0,114,255,0.6);
-    }
-    
-    .loader {
-      display:none;
-      flex-direction: column;
-      align-items:center;
-      margin-top:20px;
-    }
-    
-    .spinner {
-      width:50px;
-      height:50px;
-      border:4px solid rgba(255,255,255,0.2);
-      border-top:4px solid #00c6ff;
-      border-radius:50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    /* ============================================
-       ESTILOS DA PÁGINA PRINCIPAL (IGUAL AO INDEX)
-       ============================================ */
     :root {
       --cfm-blue: #0d47a1;
-      --cfm-light: #e3f2fd;
-      --cfm-gray: #f0f5ff;
-      --text-dark: #222;
-      --text-light: #555;
-      --border: #ddd;
-      --shadow: 0 2px 10px rgba(0,0,0,0.1);
-      --success: #2e7d32;
-      --warning: #f57c00;
-      --danger: #c62828;
-      --whatsapp-green: #25d366;
-      --whatsapp-light: #dcf8c6;
+      --cfm-blue-light: #1e88e5;
+      --cfm-green: #2e7d32;
+      --cfm-green-light: #4caf50;
+      --cfm-red: #c62828;
+      --cfm-red-light: #ef5350;
+      --cfm-orange: #f57c00;
+      --cfm-orange-light: #ff9800;
+      --cfm-purple: #6a1b9a;
+      --light-bg: #f8fbff;
+      --card-bg: #ffffff;
+      --border: #e0e0e0;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+      --radius: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     * {
@@ -144,1873 +34,1239 @@
     }
     
     body {
-      background: #fff;
-      color: var(--text-dark);
+      background: linear-gradient(135deg, #f8fbff 0%, #e8f4ff 100%);
+      color: #222;
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+    
+    /* Telas */
+    .screen {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    .screen.active {
+      display: block;
+    }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Card Principal */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      margin-bottom: 25px;
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+    
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+    
+    /* Header comum */
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    h1 {
+      color: var(--cfm-blue);
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+    
+    /* Formulários */
+    .form-group {
+      margin-bottom: 22px;
+    }
+    
+    label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-weight: 500;
+      color: #333;
+      font-size: 0.95rem;
+    }
+    
+    .required::after {
+      content: " *";
+      color: var(--cfm-red);
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      background: white;
+      transition: var(--transition);
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--cfm-blue);
+      box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1);
+      transform: translateY(-1px);
+    }
+    
+    textarea {
+      height: 160px;
+      resize: vertical;
+      min-height: 120px;
       line-height: 1.5;
-      height: 100vh;
+    }
+    
+    /* Botões */
+    .btn {
+      background: linear-gradient(135deg, var(--cfm-blue) 0%, var(--cfm-blue-light) 100%);
+      color: white;
+      border: none;
+      padding: 18px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      position: relative;
+      transition: var(--transition);
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       overflow: hidden;
     }
     
-    /* ANIMAÇÕES */
-    @keyframes slideDown {
-      from { transform: translateY(-20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
     }
     
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .btn:hover::before {
+      left: 100%;
     }
     
-    @keyframes slideInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(13, 71, 161, 0.25);
     }
     
-    @keyframes pulse {
-      0% { opacity: 0.6; }
-      50% { opacity: 1; }
-      100% { opacity: 0.6; }
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(135deg, #666 0%, #888 100%);
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, var(--cfm-green) 0%, var(--cfm-green-light) 100%);
+    }
+    
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    }
+    
+    .btn-whatsapp:hover {
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.25);
+    }
+    
+    .btn-logout {
+      background: linear-gradient(135deg, var(--cfm-red) 0%, var(--cfm-red-light) 100%);
+      width: auto;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      margin-top: 0;
+    }
+    
+    /* Botões de ação */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    /* Loader */
+    .loader {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
     
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
     }
     
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    
-    @keyframes fadeInMessage {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    
-    @keyframes slideInRight {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    @keyframes slideInLeft {
-      from { transform: translateX(-50px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translate(-50%, 10px); }
-      20% { opacity: 1; transform: translate(-50%, 0); }
-      80% { opacity: 1; transform: translate(-50%, 0); }
-      100% { opacity: 0; transform: translate(-50%, -10px); }
-    }
-    
-    @keyframes pulseRing {
-      0% { box-shadow: 0 0 0 0 rgba(13, 71, 161, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(13, 71, 161, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(13, 71, 161, 0); }
-    }
-    
-    @keyframes slideInDown {
-      from { transform: translate(-50%, -20px); opacity: 0; }
-      to { transform: translate(-50%, 0); opacity: 1; }
-    }
-    
-    /* BOTÃO DE PÂNICO */
-    @keyframes pulsarPanico {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
-      70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
-    }
-    
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-      20%, 40%, 60%, 80% { transform: translateX(5px); }
-    }
-    
-    #botao-panico {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, #ff0000, #ff6b6b);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      cursor: pointer;
-      z-index: 9999;
-      box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
-      animation: pulsarPanico 1.5s infinite;
-      transition: all 0.3s;
-      border: none;
-    }
-    
-    #botao-panico:hover {
-      transform: scale(1.15);
-      box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
-    }
-    
-    /* MODAL DE PÂNICO */
-    #modal-panico {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100000;
-      animation: fadeIn 0.3s;
-    }
-    
-    #modal-panico .modal-content {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    /* Status e mensagens */
+    .status {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 10px;
       text-align: center;
-    }
-    
-    /* RESTANTE DOS ESTILOS (IGUAL AO INDEX) */
-    .main-content {
-      display: none;
-    }
-    
-    .main-content.active {
-      display: block;
-    }
-    
-    header {
-      background: var(--cfm-blue);
-      color: white;
-      padding: 16px 20px;
-      position: relative;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      animation: slideDown 0.5s ease;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-    }
-    
-    .title {
-      font-size: 1.1rem;
       font-weight: 500;
-      text-align: center;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    
-    .last-update {
-      font-size: 0.7rem;
-      opacity: 0.8;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    
-    .hamburger {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 4px;
-      transition: transform 0.3s;
-      z-index: 10;
-    }
-    
-    .hamburger:hover {
-      transform: scale(1.1);
-    }
-    
-    .refresh-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.2rem;
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 50%;
-      transition: all 0.3s;
-      z-index: 10;
-    }
-    
-    .refresh-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: rotate(180deg);
-    }
-    
-    .refresh-btn.spinning {
-      animation: spin 1s linear infinite;
-    }
-    
-    #new-update-notification {
-      position: fixed;
-      top: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(135deg, #0d47a1, #1565c0);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 50px;
-      box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
-      z-index: 1001;
       display: none;
-      align-items: center;
+      animation: slideIn 0.3s ease;
+      border-left: 5px solid;
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .success { 
+      background: linear-gradient(135deg, #e6f4ea 0%, #d4edda 100%); 
+      color: #137333;
+      border-left-color: #28a745;
+    }
+    
+    .error { 
+      background: linear-gradient(135deg, #fce8e6 0%, #f8d7da 100%); 
+      color: #c5221f;
+      border-left-color: #dc3545;
+    }
+    
+    .info { 
+      background: linear-gradient(135deg, #e8f0fe 0%, #d1e7fd 100%); 
+      color: #1967d2;
+      border-left-color: #007bff;
+    }
+    
+    /* Navegação */
+    .nav {
+      display: flex;
+      justify-content: center;
       gap: 10px;
-      cursor: pointer;
-      animation: slideInDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      font-weight: 500;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
     }
     
-    #new-update-notification.urgent {
-      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-      animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1), pulse 1s infinite;
+    .nav-btn {
+      padding: 14px 24px;
+      border: 2px solid var(--cfm-blue);
+      background: white;
+      color: var(--cfm-blue);
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .nav-btn.active {
+      background: linear-gradient(135deg, var(--cfm-blue) 0%, var(--cfm-blue-light) 100%);
+      color: white;
+      border-color: var(--cfm-blue);
+    }
+    
+    .nav-btn:hover:not(.active) {
+      background: #e8f0fe;
+      transform: translateY(-2px);
+    }
+    
+    /* Painel de usuários */
+    .user-list {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-top: 20px;
+      overflow: hidden;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .user-item {
+      padding: 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+    }
+    
+    .user-item:hover {
+      background: #f8f9fa;
+    }
+    
+    .user-item:last-child {
+      border-bottom: none;
+    }
+    
+    .user-info h4 {
+      color: #333;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+    }
+    
+    .user-info p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .user-role {
+      background: linear-gradient(135deg, var(--cfm-blue) 0%, var(--cfm-blue-light) 100%);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .user-role.admin {
+      background: linear-gradient(135deg, var(--cfm-red) 0%, var(--cfm-red-light) 100%);
+    }
+    
+    /* Logout */
+    .logout-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    
+    .user-welcome {
+      color: #333;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+    
+    .user-welcome span {
+      color: var(--cfm-blue);
+      font-weight: 700;
+    }
+    
+    /* Notas de ajuda */
+    .help-text {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 6px;
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    /* Contador de caracteres */
+    .char-counter {
+      text-align: right;
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    .char-counter.warning {
+      color: var(--cfm-orange);
+      font-weight: bold;
+    }
+    
+    .char-counter.danger {
+      color: var(--cfm-red);
+      font-weight: bold;
+    }
+    
+    /* Preview da Mensagem */
+    .message-preview {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 4px solid var(--cfm-blue);
+      display: none;
+    }
+    
+    .message-preview h4 {
+      color: var(--cfm-blue);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .message-preview-content {
+      color: #444;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 10px;
+      background: white;
+      border-radius: 5px;
+    }
+    
+    /* Badge de status */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+    
+    .status-badge.sent {
+      background: #e6f4ea;
+      color: #137333;
+    }
+    
+    .status-badge.shared {
+      background: #e8f0fe;
+      color: #1967d2;
+    }
+    
+    /* Responsividade */
+    @media (max-width: 600px) {
+      body {
+        padding: 15px;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+      
+      .nav {
+        flex-direction: column;
+      }
+      
+      .nav-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .action-buttons {
+        grid-template-columns: 1fr;
+      }
+      
+      .logout-bar {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+    }
+    
+    /* Animações */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
     
     .pulse {
-      animation: pulseRing 2s infinite;
-    }
-    
-    .menu {
-      position: fixed;
-      top: 0;
-      right: -300px;
-      width: 260px;
-      height: 100vh;
-      background: white;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-      z-index: 1000;
-      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      padding-top: 60px;
-    }
-    
-    .menu.open {
-      right: 0;
-    }
-    
-    .menu-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      font-weight: 500;
-      color: var(--cfm-blue);
-      animation: fadeIn 0.3s ease;
-    }
-    
-    .menu-item {
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: var(--text-dark);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .menu-item:hover {
-      background: var(--cfm-light);
-      padding-left: 25px;
-    }
-    
-    .menu-item i {
-      width: 20px;
-      text-align: center;
-    }
-    
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.4);
-      z-index: 999;
-      display: none;
-      animation: fadeIn 0.3s;
-    }
-    
-    .overlay.active {
-      display: block;
-    }
-    
-    .main-container {
-      position: fixed;
-      top: 70px;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      overflow-y: auto;
-      padding: 20px;
-      background: #fff;
-    }
-    
-    .smooth-scroll {
-      scroll-behavior: smooth;
-    }
-    
-    .updates-container {
-      min-height: calc(100vh - 150px);
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .update-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 15px;
-      box-shadow: var(--shadow);
-      animation: slideInUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      transition: transform 0.2s;
-    }
-    
-    .update-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    .update-card.new {
-      border-left: 4px solid var(--whatsapp-green);
-      background: linear-gradient(to right, rgba(37, 211, 102, 0.05), white);
-    }
-    
-    .original-message {
-      white-space: pre-wrap;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 12px;
-      color: var(--text-dark);
-    }
-    
-    .admin-info {
-      font-size: 0.8rem;
-      color: var(--text-light);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 8px;
-    }
-    
-    .admin-name {
-      font-weight: 600;
-      color: var(--cfm-blue);
-    }
-    
-    .waiting {
-      text-align: center;
-      color: var(--text-light);
-      font-style: italic;
-      padding: 30px 0;
       animation: pulse 2s infinite;
-      margin-top: 10px;
     }
     
-    .loader-container {
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    
-    .loader-container.visible {
-      opacity: 1;
-    }
-    
-    .loader {
-      width: 40px;
-      height: 40px;
-      border: 4px solid var(--cfm-light);
-      border-top: 4px solid var(--cfm-blue);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    .chat-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      background: var(--whatsapp-green);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      font-size: 1.4rem;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      z-index: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      animation: float 3s ease-in-out infinite;
-    }
-    
-    .chat-btn:hover {
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
-    }
-    
-    .chat-btn .badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: var(--danger);
-      color: white;
-      font-size: 0.7rem;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: pulse 1.5s infinite;
-    }
-    
-    .copy-confirmation {
-      position: fixed;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--success);
-      color: white;
-      padding: 10px 20px;
-      border-radius: 50px;
-      box-shadow: var(--shadow);
-      z-index: 1200;
-      animation: fadeInOut 2s ease;
-      display: none;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .stats-badge {
-      position: fixed;
-      bottom: 90px;
-      left: 30px;
-      background: white;
-      border-radius: 50px;
-      box-shadow: var(--shadow);
-      padding: 8px 16px;
-      font-size: 0.8rem;
-      color: var(--text-light);
-      z-index: 890;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      animation: slideInLeft 0.5s ease;
-    }
-    
-    .stats-badge i {
-      color: var(--cfm-blue);
-    }
-    
-    .scroll-to-bottom {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 44px;
-      height: 44px;
-      background: var(--cfm-blue);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      z-index: 890;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-      animation: slideInLeft 0.5s ease;
-    }
-    
-    .scroll-to-bottom:hover {
-      transform: translateY(-3px);
-      background: #1565c0;
-    }
-    
-    .scroll-to-bottom.visible {
-      display: flex;
-    }
-    
-    .update-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--cfm-light);
-    }
-    
-    .update-action-btn {
-      background: none;
-      border: none;
-      color: var(--text-light);
-      cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 4px;
-      transition: all 0.2s;
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    
-    .update-action-btn:hover {
-      color: var(--cfm-blue);
-      background: var(--cfm-light);
-    }
-    
-    .update-action-btn.copy:hover {
-      color: var(--success);
-    }
-    
-    .update-action-btn.share:hover {
-      color: var(--whatsapp-green);
-    }
-    
+    /* Scrollbar personalizada */
     ::-webkit-scrollbar {
-      width: 6px;
+      width: 8px;
     }
     
     ::-webkit-scrollbar-track {
-      background: transparent;
+      background: #f1f1f1;
+      border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb {
-      background: rgba(0,0,0,0.2);
+      background: var(--cfm-blue);
       border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(0,0,0,0.3);
-    }
-    
-    .chat-screen {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #ece5dd;
-      z-index: 1100;
-      flex-direction: column;
-      animation: slideInRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    
-    .chat-header {
-      background: var(--cfm-blue);
-      color: white;
-      padding: 16px;
-      text-align: center;
-      font-weight: 500;
-      position: relative;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .back-btn {
-      position: absolute;
-      left: 16px;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.4rem;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    
-    .back-btn:hover {
-      transform: scale(1.2);
-    }
-    
-    #chat-messages {
-      flex: 1;
-      padding: 16px;
-      overflow-y: auto;
-      background: #ece5dd;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .message-container {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 10px;
-      animation: fadeInMessage 0.3s ease;
-    }
-    
-    .message {
-      max-width: 75%;
-      padding: 10px 14px;
-      border-radius: 18px;
-      margin-bottom: 4px;
-      position: relative;
-      word-wrap: break-word;
-      animation: fadeInMessage 0.3s ease;
-    }
-    
-    .message.sent {
-      background: var(--whatsapp-light);
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-    
-    .message.received {
-      background: white;
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-    
-    .message-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.7rem;
-      color: var(--text-light);
-      margin-top: 2px;
-    }
-    
-    .message-sender {
-      font-weight: 600;
-      font-size: 0.85rem;
-      margin-bottom: 4px;
-    }
-    
-    .message.received .message-sender {
-      color: var(--cfm-blue);
-    }
-    
-    .message.sent .message-sender {
-      color: var(--success);
-    }
-    
-    .message-actions {
-      position: absolute;
-      top: -30px;
-      right: 10px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      display: none;
-      z-index: 10;
-      animation: fadeIn 0.2s;
-    }
-    
-    .message:hover .message-actions {
-      display: flex;
-    }
-    
-    .action-btn {
-      background: none;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-      color: var(--text-light);
-      transition: all 0.2s;
-      font-size: 0.9rem;
-    }
-    
-    .action-btn:hover {
-      color: var(--cfm-blue);
-      background: var(--cfm-light);
-    }
-    
-    .action-btn.delete:hover {
-      color: var(--danger);
-    }
-    
-    .action-btn.edit:hover {
-      color: var(--warning);
-    }
-    
-    .chat-input-area {
-      padding: 12px;
-      background: white;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-    }
-    
-    #chat-text {
-      flex: 1;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      outline: none;
-      font-size: 0.95rem;
-      transition: all 0.3s;
-    }
-    
-    #chat-text:focus {
-      border-color: var(--whatsapp-green);
-      box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.2);
-    }
-    
-    #chat-send {
-      background: var(--whatsapp-green);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      margin-left: 10px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    #chat-send:hover:not(.loading) {
-      background: #1da851;
-      transform: scale(1.1);
-    }
-    
-    #chat-send.loading {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-    
-    #chat-send.loading i {
-      animation: spin 1s linear infinite;
-    }
-    
-    .online-status {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 10px;
-      font-size: 0.7rem;
-      z-index: 1002;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    
-    .online-dot {
-      width: 8px;
-      height: 8px;
-      background: #4caf50;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
+      background: var(--cfm-blue-light);
     }
   </style>
 </head>
 <body>
-  <!-- PÁGINA DE CADASTRO -->
-  <div class="capa" id="capa">
+  <!-- Tela de Login -->
+  <div id="loginScreen" class="screen active">
     <div class="card">
-      <h1>Actualização de Comboio<br>Beira / Moatize</h1>
-      <p>Insira os seus dados para continuar</p>
-
-      <input id="nome" placeholder="Nome completo">
-      <input id="telefone" placeholder="+258 84xxxxxxx">
-
-      <button id="btnEntrar" onclick="submeterCadastro()">Entrar</button>
-
-      <div class="loader" id="loader">
-        <div class="spinner"></div>
-        <p>A entrar...</p>
+      <header>
+        <h1><i class="fas fa-lock"></i> Login Administrativo</h1>
+        <p class="subtitle">Painel de Administração CFM</p>
+      </header>
+      
+      <div class="form-group">
+        <label for="loginIdentifier">
+          <i class="fas fa-user-circle"></i>
+          <span>Email ou Número de Telefone</span>
+          <span class="required"></span>
+        </label>
+        <input type="text" id="loginIdentifier" placeholder="seu@email.com ou 841234567" />
       </div>
-    </div>
-  </div>
-
-  <!-- CONTEÚDO PRINCIPAL -->
-  <div class="main-content" id="mainContent">
-    <div class="online-status" id="onlineStatus">
-      <div class="online-dot"></div>
-      <span>Online</span>
-    </div>
-    
-    <div id="new-update-notification">
-      <i class="fas fa-bullhorn"></i>
-      <span>Nova actualização disponível!</span>
-      <button style="background:none;border:none;color:white;margin-left:10px;">
-        <i class="fas fa-sync-alt"></i>
-      </button>
-    </div>
-    
-    <header>
-      <button class="hamburger" id="menuToggle">☰</button>
-      <div class="title">
-        Actualizações do Comboio de Passageiros Beira - Moatize
-        <div class="last-update" id="lastUpdateTime">
-          <i class="fas fa-clock"></i>
-          <span>Última verificação: --:--</span>
+      
+      <div class="form-group">
+        <label for="loginPassword">
+          <i class="fas fa-key"></i>
+          <span>Senha (máx 6 caracteres)</span>
+          <span class="required"></span>
+        </label>
+        <input type="password" id="loginPassword" placeholder="••••••" maxlength="6" />
+        <div class="help-text">
+          <i class="fas fa-info-circle"></i>
+          Apenas números e letras, máximo 6 caracteres
         </div>
       </div>
-      <button class="refresh-btn" id="manualRefresh" title="Verificar novas actualizações">
-        <i class="fas fa-sync-alt"></i>
+      
+      <button class="btn" onclick="handleLogin()">
+        <i class="fas fa-sign-in-alt"></i>
+        Entrar no Painel
+        <div class="loader" id="loginLoader"></div>
       </button>
-    </header>
-    
-    <div class="main-container smooth-scroll" id="mainContainer">
-      <div class="loader-container" id="updatesLoader">
-        <div class="loader"></div>
+      
+      <div id="loginStatus" class="status"></div>
+    </div>
+  </div>
+  
+  <!-- Tela Principal (Após Login) -->
+  <div id="adminScreen" class="screen">
+    <div class="logout-bar">
+      <div class="user-welcome">
+        <i class="fas fa-user-shield"></i>
+        Bem-vindo, <span id="currentUserName">Administrador</span>
       </div>
-      <div class="updates-container" id="updates-content">
-        <p class="waiting">A carregar actualizações...</p>
-      </div>
+      <button class="btn btn-logout" onclick="handleLogout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Sair
+      </button>
     </div>
     
-    <button class="scroll-to-bottom" id="scrollToBottom" title="Ir para a última mensagem">
-      <i class="fas fa-arrow-down"></i>
-    </button>
-    
-    <div class="stats-badge" id="statsBadge">
-      <i class="fas fa-users"></i>
-      <span id="statsText">Carregando estatísticas...</span>
-    </div>
-    
-    <button class="chat-btn" id="openChat">
-      <i class="fas fa-comment"></i>
-      <div class="badge" id="chatBadge" style="display: none;">0</div>
-    </button>
-    
-    <div class="copy-confirmation" id="copyConfirmation">
-      <i class="fas fa-check"></i> Texto copiado!
-    </div>
-    
-    <div class="menu" id="menu">
-      <div class="menu-header">🛡️Powered by Stunner System</div>
-      <div class="menu-item" onclick="window.location.href='estacoes.html'">
-        <i class="fas fa-train"></i> Estações Beira/Moatize
-      </div>
-      <div class="menu-item" onclick="window.location.href='horarios.html'">
-        <i class="fas fa-times"></i> Horários
-      </div>
-      <div class="menu-item" onclick="window.location.href='sobre.html'">
-        <i class="fas fa-info-circle"></i> Sobre
-      </div>
-      <div class="menu-item" onclick="window.location.href='termos.html'">
-        <i class="fas fa-file-contract"></i> Termos de Uso
-      </div>
-      <div class="menu-item" onclick="window.location.href='politicas.html'">
-        <i class="fas fa-shield-alt"></i> Política de Privacidade
-      </div>
-      <div class="menu-item" onclick="window.location.href='estatisticas.html'">
-        <i class="fas fa-chart-line"></i> Estatísticas
-      </div>
-      <div class="menu-item" onclick="window.location.href='avisos.html'">
-        <i class="fas fa-comments"></i> Avisos importantes
-      </div>
-      <div class="menu-item" onclick="debugUsuario()">
-        <i class="fas fa-bug"></i> Debug Usuário
-      </div>
-      <div class="menu-item" onclick="sairDoSistema()">
-        <i class="fas fa-sign-out-alt"></i> Sair (Entrar com outra conta)
-      </div>
-    </div>
-    
-    <div class="overlay" id="overlay"></div>
-    
-    <!-- TELA DE CHAT -->
-    <div class="chat-screen" id="chatScreen">
-      <div class="chat-header">
-        <button class="back-btn" id="closeChat">←</button>
-        Bloco de Pate-Papo
-      </div>
-      <div id="chat-messages">
-        <div class="waiting">Carregando mensagens...</div>
-      </div>
-      <div class="chat-input-area">
-        <input type="text" id="chat-text" placeholder="Digite sua mensagem..." maxlength="280" />
-        <button id="chat-send">
+    <div class="card">
+      <div class="nav">
+        <div class="nav-btn active" onclick="showTab('sendUpdate')">
           <i class="fas fa-paper-plane"></i>
+          Enviar Actualização
+        </div>
+        <div class="nav-btn" onclick="showTab('createUser')">
+          <i class="fas fa-user-plus"></i>
+          Criar Usuário
+        </div>
+        <div class="nav-btn" onclick="showTab('viewUsers')">
+          <i class="fas fa-users"></i>
+          Ver Usuários
+        </div>
+      </div>
+      
+      <!-- Sub-tela: Enviar Actualização -->
+      <div id="sendUpdateTab" class="screen active">
+        <header>
+          <h1><i class="fas fa-bullhorn"></i> Enviar Actualização Oficial</h1>
+        </header>
+        
+        <div class="form-group">
+          <label for="adminName">
+            <i class="fas fa-user-tie"></i>
+            Seu Nome (Administrador)
+          </label>
+          <input type="text" id="adminName" placeholder="Ex: Coutinho Pita" />
+        </div>
+        
+        <div class="form-group">
+          <label for="message">
+            <i class="fas fa-comment-alt"></i>
+            Mensagem Completa (copie do WhatsApp)
+            <span class="required"></span>
+          </label>
+          <textarea id="message" placeholder="Cole aqui a mensagem completa do grupo oficial..."></textarea>
+          <div class="char-counter" id="charCounter">
+            <span id="charCount">0</span> caracteres
+          </div>
+        </div>
+        
+        <!-- Preview da Mensagem -->
+        <div id="messagePreview" class="message-preview">
+          <h4><i class="fas fa-eye"></i> Pré-visualização</h4>
+          <div id="messagePreviewContent" class="message-preview-content"></div>
+        </div>
+        
+        <!-- Botões de Ação -->
+        <div class="action-buttons">
+          <button class="btn btn-success" onclick="sendUpdate()">
+            <i class="fas fa-cloud-upload-alt"></i>
+            Salvar no Sistema
+            <div class="loader" id="updateLoader"></div>
+          </button>
+          
+          <button class="btn btn-whatsapp" onclick="shareToWhatsApp()" id="whatsappBtn" disabled>
+            <i class="fab fa-whatsapp"></i>
+            Compartilhar no WhatsApp
+            <div class="loader" id="whatsappLoader"></div>
+          </button>
+        </div>
+        
+        <div id="updateStatus" class="status"></div>
+      </div>
+      
+      <!-- Sub-tela: Criar Usuário -->
+      <div id="createUserTab" class="screen">
+        <header>
+          <h1><i class="fas fa-user-plus"></i> Criar Novo Usuário</h1>
+          <p class="subtitle">Adicionar membro à equipa administrativa</p>
+        </header>
+        
+        <div class="form-group">
+          <label for="userPhone">
+            <i class="fas fa-phone"></i>
+            <span>Número de Telefone</span>
+            <span class="required"></span>
+          </label>
+          <input type="tel" id="userPhone" placeholder="841234567" pattern="[0-9]{9}" />
+          <div class="help-text">
+            <i class="fas fa-info-circle"></i>
+            Apenas 9 dígitos, sem espaços ou +258
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="userFullName">
+            <i class="fas fa-id-card"></i>
+            <span>Nome Completo</span>
+            <span class="required"></span>
+          </label>
+          <input type="text" id="userFullName" placeholder="João da Silva" />
+        </div>
+        
+        <div class="form-group">
+          <label for="userNickname">
+            <i class="fas fa-user-tag"></i>
+            Nickname/Apelido
+          </label>
+          <input type="text" id="userNickname" placeholder="Jota" />
+        </div>
+        
+        <div class="form-group">
+          <label for="userEmail">
+            <i class="fas fa-envelope"></i>
+            <span>Email</span>
+            <span class="required"></span>
+          </label>
+          <input type="email" id="userEmail" placeholder="joao@exemplo.com" />
+        </div>
+        
+        <div class="form-group">
+          <label for="userPassword">
+            <i class="fas fa-lock"></i>
+            <span>Senha Temporária</span>
+            <span class="required"></span>
+          </label>
+          <input type="password" id="userPassword" placeholder="••••••" maxlength="6" />
+          <div class="help-text">
+            <i class="fas fa-info-circle"></i>
+            Máximo 6 caracteres (letras e números apenas)
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="userRole">
+            <i class="fas fa-user-shield"></i>
+            <span>Tipo de Acesso</span>
+            <span class="required"></span>
+          </label>
+          <select id="userRole">
+            <option value="user">Usuário Normal</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+        
+        <button class="btn btn-success" onclick="createUser()">
+          <i class="fas fa-plus-circle"></i>
+          Criar Usuário
+          <div class="loader" id="createUserLoader"></div>
         </button>
+        
+        <div id="createUserStatus" class="status"></div>
+      </div>
+      
+      <!-- Sub-tela: Ver Usuários -->
+      <div id="viewUsersTab" class="screen">
+        <header>
+          <h1><i class="fas fa-users"></i> Usuários do Sistema</h1>
+          <p class="subtitle">Lista de todos os usuários cadastrados</p>
+        </header>
+        
+        <button class="btn btn-secondary" onclick="loadUsers()">
+          <i class="fas fa-sync-alt"></i>
+          Atualizar Lista
+          <div class="loader" id="usersLoader"></div>
+        </button>
+        
+        <div id="usersList" class="user-list">
+          <!-- Lista de usuários será carregada aqui -->
+          <div class="user-item">
+            <div class="user-info">
+              <h4>Carregando usuários...</h4>
+              <p>Aguarde enquanto buscamos os dados</p>
+            </div>
+          </div>
+        </div>
+        
+        <div id="usersStatus" class="status"></div>
       </div>
     </div>
   </div>
 
   <script>
-    // ============================================
-    // CONFIGURAÇÕES (IGUAL AO INDEX)
-    // ============================================
-    const CADASTRO_URL = "https://script.google.com/macros/s/AKfycbxOxp-fnkipLZ8BWAOi44y9fmLsMreBtqSJ7ieBp_ja_DlxFkpqJEkLFrOlezI7gzML/exec";
+    // ✅ URL do Google Apps Script
     const GAS_URL = "https://script.google.com/macros/s/AKfycby7_IGl4-vf2A81zi9STdIWQrBS31M3Ornq1m_6R2lh33a7EcXbP8l2xNBLQUk_S0JJ/exec";
     
-    let lastUpdateCount = 0;
-    let currentUser = "";
-    let userMessages = {};
-    let cachedUpdates = [];
-    let isAutoScrolling = true;
-    let notificationAudio = null;
-    
-    // ============================================
-    // SISTEMA DE CADASTRO (SOMENTE NO SIM)
-    // ============================================
-    function validarNome(nome) {
-      const partes = nome.trim().split(/\s+/);
-      return /^[A-Za-zÀ-ÿ ]+$/.test(nome) && partes.length <= 3 && partes[0].length >= 2;
-    }
-    
-    function validarTelefone(tel) {
-      const limpo = tel.replace(/\D/g, '');
-      return /^(?:258)?(82|83|84|85|86|87)\d{7}$/.test(limpo);
-    }
-    
-    function criarIdUsuario(nomeCompleto, telefone) {
-      const primeiroNome = nomeCompleto.trim().split(/\s+/)[0];
-      const numeroLimpo = telefone.replace(/\D/g, '').replace(/^258/, '');
-      return `${primeiroNome}_${numeroLimpo}`;
-    }
-    
-    function submeterCadastro() {
-      const nome = document.getElementById("nome").value.trim();
-      let telefone = document.getElementById("telefone").value.trim();
+    // Estado da aplicação
+    let currentUser = null;
+    let authToken = null;
+    let lastSavedMessage = null;
+    let lastUpdateId = null;
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', function() {
+      checkExistingSession();
+      setupMessagePreview();
+      loadUsers(); // Carregar usuários inicialmente
+    });
+
+    // Configurar pré-visualização da mensagem
+    function setupMessagePreview() {
+      const messageInput = document.getElementById('message');
+      const charCounter = document.getElementById('charCounter');
+      const charCount = document.getElementById('charCount');
+      const preview = document.getElementById('messagePreview');
+      const previewContent = document.getElementById('messagePreviewContent');
+      const whatsappBtn = document.getElementById('whatsappBtn');
       
-      if (!validarNome(nome)) {
-        alert("Nome inválido. Use somente letras (até 3 nomes).");
-        return;
-      }
-      
-      telefone = telefone.replace(/\D/g, '');
-      if (telefone.length === 9) {
-        telefone = '258' + telefone;
-      }
-      
-      if (!validarTelefone(telefone)) {
-        alert("Número inválido. Use formato: 84xxxxxxx");
-        return;
-      }
-      
-      document.getElementById("btnEntrar").style.display = "none";
-      document.getElementById("loader").style.display = "flex";
-      
-      setTimeout(() => {
-        const formData = new URLSearchParams();
-        formData.append("nome", nome);
-        formData.append("telefone", `+${telefone}`);
+      messageInput.addEventListener('input', function() {
+        const text = this.value;
+        const length = text.length;
         
-        fetch(CADASTRO_URL, {
-          method: "POST",
-          body: formData
-        })
-        .then(res => res.json())
-        .then(resposta => {
-          if (resposta.status === "salvo" || resposta.status === "existe") {
-            localStorage.setItem("usuario", JSON.stringify({ 
-              nome, 
-              telefone: `+${telefone}` 
-            }));
-            
-            currentUser = criarIdUsuario(nome, telefone);
-            console.log("Usuário cadastrado:", currentUser);
-            
-            entrar();
-          } else {
-            throw new Error(resposta.mensagem);
-          }
-        })
-        .catch(err => {
-          alert("Erro ao enviar dados.");
-          document.getElementById("btnEntrar").style.display = "block";
-          document.getElementById("loader").style.display = "none";
-        });
-      }, 1500);
+        // Atualizar contador
+        charCount.textContent = length;
+        
+        // Atualizar classe do contador
+        charCounter.className = 'char-counter';
+        if (length > 1000) {
+          charCounter.classList.add('warning');
+        }
+        if (length > 2000) {
+          charCounter.classList.add('danger');
+        }
+        
+        // Atualizar pré-visualização
+        if (text.length > 0) {
+          previewContent.textContent = text;
+          preview.style.display = 'block';
+          whatsappBtn.disabled = false;
+        } else {
+          preview.style.display = 'none';
+          whatsappBtn.disabled = true;
+        }
+      });
     }
-    
-    function entrar() {
-      document.getElementById("capa").style.opacity = "0";
-      setTimeout(() => {
-        document.getElementById("capa").classList.add("hidden");
-        document.getElementById("mainContent").classList.add("active");
-        inicializarSistemaPrincipal();
-      }, 800);
-    }
-    
-    function entrarDireto() {
-      document.getElementById("capa").classList.add("hidden");
-      document.getElementById("mainContent").classList.add("active");
-      inicializarSistemaPrincipal();
-    }
-    
-    function sairDoSistema() {
-      if (confirm("Sair do sistema?")) {
-        localStorage.removeItem("usuario");
-        alert("Dados removidos.");
-        setTimeout(() => location.reload(), 1000);
-      }
-    }
-    
-    function debugUsuario() {
-      const usuario = JSON.parse(localStorage.getItem("usuario"));
-      console.log('=== DEBUG USUÁRIO ===');
-      console.log('LocalStorage:', usuario);
-      console.log('ID Gerado:', currentUser);
-      
-      if (!usuario) {
-        alert('Nenhum usuário no localStorage!');
-      } else {
-        alert(`Usuário: ${usuario.nome}\nTelefone: ${usuario.telefone}\nID Chat: ${currentUser}`);
-      }
-    }
-    
-    // ============================================
-    // FUNÇÕES DO SISTEMA PRINCIPAL (IGUAL AO INDEX)
-    // ============================================
-    function initializeAudio() {
-      try {
-        notificationAudio = new Audio('sound.mp3');
-        notificationAudio.volume = 0.7;
-        notificationAudio.preload = 'auto';
-      } catch (e) {
-        console.log('Erro ao inicializar áudio');
-      }
-    }
-    
-    function initializeUser() {
+
+    // Verificar se já está logado
+    function checkExistingSession() {
+      const savedToken = localStorage.getItem('cfm_auth_token');
       const savedUser = localStorage.getItem('cfm_user');
-      if (savedUser) {
-        currentUser = savedUser;
-      } else {
-        currentUser = `Usuário_${Math.floor(100 + Math.random() * 900)}`;
-        localStorage.setItem('cfm_user', currentUser);
+      
+      if (savedToken && savedUser) {
+        try {
+          currentUser = JSON.parse(savedUser);
+          authToken = savedToken;
+          showAdminScreen();
+        } catch (e) {
+          localStorage.clear();
+        }
       }
     }
-    
-    function saveToCache(key, data) {
-      try {
-        localStorage.setItem(`cfm_${key}`, JSON.stringify({
-          data: data,
-          timestamp: Date.now()
-        }));
-      } catch (e) {
-        console.error('Erro ao salvar cache:', e);
-      }
-    }
-    
-    function getFromCache(key, maxAge = 3600000) {
-      try {
-        const cached = localStorage.getItem(`cfm_${key}`);
-        if (cached) {
-          const { data, timestamp } = JSON.parse(cached);
-          if (Date.now() - timestamp < maxAge) {
-            return data;
-          }
-        }
-      } catch (e) {
-        console.error('Erro ao ler cache:', e);
-      }
-      return null;
-    }
-    
-    function setupMenu() {
-      const menu = document.getElementById('menu');
-      const overlay = document.getElementById('overlay');
-      const menuToggle = document.getElementById('menuToggle');
-      
-      menuToggle.addEventListener('click', () => {
-        menu.classList.add('open');
-        overlay.classList.add('active');
-      });
-      
-      overlay.addEventListener('click', () => {
-        menu.classList.remove('open');
-        overlay.classList.remove('active');
-      });
-    }
-    
-    async function loadUpdates(showNotification = true) {
-      if (localStorage.getItem('cfm_bloqueado') === 'true') return;
-      
-      const container = document.getElementById('updates-content');
-      const loader = document.getElementById('updatesLoader');
-      loader.classList.add('visible');
-      
-      try {
-        console.log("Carregando atualizações...");
-        const res = await fetch(`${GAS_URL}?action=updates&t=${Date.now()}`);
-        console.log("Resposta recebida:", res);
-        
-        const data = await res.json();
-        console.log("Dados recebidos:", data);
-        
-        const updates = data.updates || [];
-        console.log("Número de atualizações:", updates.length);
-        
-        updates.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-        const currentCount = updates.length;
-        
-        if (showNotification && lastUpdateCount > 0 && currentCount > lastUpdateCount) {
-          const newCount = currentCount - lastUpdateCount;
-          showNewUpdateNotification(newCount);
-        }
-        
-        lastUpdateCount = currentCount;
-        saveToCache('updates', updates);
-        cachedUpdates = updates;
-        
-        if (updates.length === 0) {
-          container.innerHTML = '<p class="waiting">Aguardando actualização...</p>';
-        } else {
-          renderUpdates(updates, container);
-        }
-        
-        updateStatsBadge(updates.length);
-        setTimeout(() => {
-          scrollToLatestUpdate(true);
-        }, 300);
-        
-      } catch (e) {
-        console.error('Erro ao carregar actualizações:', e);
-        const cached = getFromCache('updates');
-        if (cached && cached.length > 0) {
-          cachedUpdates = cached;
-          renderUpdates(cached, container);
-          container.innerHTML += '<p style="text-align:center;color:var(--warning);font-size:0.9rem;margin-top:10px;"><i class="fas fa-wifi-slash"></i> Modo offline</p>';
-          setTimeout(() => {
-            scrollToLatestUpdate(true);
-          }, 300);
-        } else {
-          container.innerHTML = '<p class="waiting">Erro ao carregar actualizações.</p>';
-        }
-      } finally {
-        loader.classList.remove('visible');
-        updateLastUpdateTime();
-      }
-    }
-    
-    function renderUpdates(updates, container) {
-      console.log("Renderizando", updates.length, "atualizações");
-      
-      const sortedUpdates = [...updates].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-      const animationDelays = sortedUpdates.map((_, index) => `${index * 0.05}s`);
-      
-      const html = sortedUpdates.map((u, index) => {
-        // ✅ Prefixar nome do admin com 🛡️ADM
-        let adminName = u.adminName || "Administração CFM";
-        if (!adminName.startsWith("🛡️ADM")) {
-          adminName = `🛡️ADM ${adminName}`;
-        }
 
-        const time = new Date(u.timestamp).toLocaleString('pt-MZ', {
-          day: '2-digit',
-          month: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
+    // ========== FUNÇÕES DE LOGIN/LOGOUT ==========
+    async function handleLogin() {
+      const identifier = document.getElementById('loginIdentifier').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const loader = document.getElementById('loginLoader');
+      const statusEl = document.getElementById('loginStatus');
+      const btn = document.querySelector('#loginScreen .btn');
 
-        const textLower = u.textoOriginal.toLowerCase();
-        let icon = '📢';
-        if (textLower.includes('atraso') || textLower.includes('atrasado')) icon = '⏰';
-        if (textLower.includes('cancel') || textLower.includes('cancelado')) icon = '❌';
-        if (textLower.includes('importante') || textLower.includes('urgente')) icon = '⚠️';
-        if (textLower.includes('horário') || textLower.includes('hora')) icon = '🕒';
-        if (textLower.includes('partida') || textLower.includes('chegada')) icon = '🚂';
+      // Validação
+      if (!identifier || !password) {
+        showStatus(statusEl, "Por favor, preencha todos os campos", false);
+        return;
+      }
+      
+      if (password.length > 6) {
+        showStatus(statusEl, "Senha deve ter no máximo 6 caracteres", false);
+        return;
+      }
 
-        const isNew = (Date.now() - new Date(u.timestamp).getTime()) < 300000;
-
-        // ✅ Converter *texto* → <strong>texto</strong> e remover *
-        let formattedText = u.textoOriginal
-          .replace(/\*([^*]+)\*/g, '<strong>$1</strong>')
-          .replace(/\n/g, '<br>');
-
-        return `
-          <div class="update-card ${isNew ? 'new' : ''}" style="animation-delay: ${animationDelays[index]};">
-            <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
-              <span style="font-size:1.5rem;flex-shrink:0;">${icon}</span>
-              <div style="flex:1;">
-                <div class="admin-info" style="margin:0;">
-                  <span class="admin-name">${adminName}</span>
-                  <span>${time}</span>
-                </div>
-                <div class="original-message">${formattedText}</div>
-              </div>
-            </div>
-            <div class="update-actions">
-              <button onclick="copyToClipboard(\`${escapeText(u.textoOriginal)}\`)" class="update-action-btn copy" title="Copiar">
-                <i class="far fa-copy"></i> Copiar
-              </button>
-              <button onclick="shareUpdate(\`${escapeText(u.textoOriginal)}\`)" class="update-action-btn share" title="Partilhar">
-                <i class="fas fa-share-alt"></i> Partilhar
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      container.innerHTML = html;
-      addWaitingMessage();
-    }
-    
-    function addWaitingMessage() {
-      const container = document.getElementById('updates-content');
-      const existingWaiting = container.querySelector('.waiting');
-      if (!existingWaiting) {
-        container.insertAdjacentHTML('beforeend', '<p class="waiting">Aguardando actualização...</p>');
-      }
-    }
-    
-    function escapeHTML(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-    
-    function escapeText(text) {
-      return text.replace(/`/g, "\\`").replace(/\n/g, "\\n");
-    }
-    
-    function showNewUpdateNotification(count) {
-      const notification = document.getElementById('new-update-notification');
-      const badge = document.getElementById('chatBadge');
-      notification.querySelector('span').textContent = 
-        count === 1 ? 'Nova actualização!' : `${count} novas actualizações!`;
-      notification.style.display = 'flex';
-      const chatBtn = document.getElementById('openChat');
-      chatBtn.classList.add('pulse');
-      
-      if (badge) {
-        const current = parseInt(badge.textContent) || 0;
-        badge.textContent = current + count;
-        badge.style.display = 'flex';
-      }
-      
-      playNotificationSound();
-      setTimeout(() => {
-        notification.style.display = 'none';
-        chatBtn.classList.remove('pulse');
-      }, 10000);
-      
-      notification.onclick = () => {
-        loadUpdates(false);
-        notification.style.display = 'none';
-        chatBtn.classList.remove('pulse');
-      };
-    }
-    
-    function playNotificationSound() {
-      try {
-        if (notificationAudio) {
-          notificationAudio.currentTime = 0;
-          notificationAudio.play().catch(() => playFallbackSound());
-        } else {
-          playFallbackSound();
-        }
-      } catch (e) {}
-    }
-    
-    function playFallbackSound() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.value = 800;
-        osc.type = 'sine';
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.5);
-      } catch (err) {}
-    }
-    
-    async function checkForNewUpdates() {
-      try {
-        const res = await fetch(`${GAS_URL}?action=updates&t=${Date.now()}`);
-        const data = await res.json();
-        const updates = data.updates || [];
-        if (lastUpdateCount > 0 && updates.length > lastUpdateCount) {
-          const newCount = updates.length - lastUpdateCount;
-          showNewUpdateNotification(newCount);
-          lastUpdateCount = updates.length;
-        }
-      } catch (e) {
-        console.log('Erro ao verificar actualizações');
-      }
-    }
-    
-    function scrollToLatestUpdate(forceScroll = false) {
-      const container = document.getElementById('mainContainer');
-      const scrollToBottomBtn = document.getElementById('scrollToBottom');
-      if (!container) return;
-      
-      const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-      if (forceScroll || isNearBottom) {
-        isAutoScrolling = true;
-        container.scrollTo({ top: container.scrollHeight, behavior: forceScroll ? 'instant' : 'smooth' });
-        if (scrollToBottomBtn) scrollToBottomBtn.classList.remove('visible');
-        if (forceScroll) setTimeout(() => { isAutoScrolling = false; }, 1000);
-      } else {
-        if (scrollToBottomBtn) scrollToBottomBtn.classList.add('visible');
-      }
-    }
-    
-    function setupScrollDetection() {
-      const container = document.getElementById('mainContainer');
-      if (!container) return;
-      
-      container.addEventListener('scroll', () => {
-        if (!isAutoScrolling) {
-          const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-          const btn = document.getElementById('scrollToBottom');
-          if (btn) {
-            if (isNearBottom) btn.classList.remove('visible');
-            else btn.classList.add('visible');
-          }
-        }
-      });
-      
-      const btn = document.getElementById('scrollToBottom');
-      if (btn) {
-        btn.addEventListener('click', () => {
-          isAutoScrolling = true;
-          container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
-          btn.classList.remove('visible');
-          setTimeout(() => { isAutoScrolling = false; }, 1000);
-        });
-      }
-    }
-    
-    function updateLastUpdateTime() {
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString('pt-MZ', { hour: '2-digit', minute: '2-digit' });
-      const lastUpdate = document.getElementById('lastUpdateTime');
-      if (lastUpdate) {
-        lastUpdate.innerHTML = `<i class="fas fa-clock"></i> Última verificação: ${timeStr}`;
-      }
-    }
-    
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        showCopyConfirmation();
-      }).catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        showCopyConfirmation();
-      });
-    }
-    
-    function showCopyConfirmation() {
-      const confirm = document.getElementById('copyConfirmation');
-      confirm.style.display = 'flex';
-      setTimeout(() => { confirm.style.display = 'none'; }, 2000);
-    }
-    
-    function shareUpdate(text) {
-      if (navigator.share) {
-        navigator.share({ title: 'Actualização CFM', text: text.substring(0, 100) + '...', url: window.location.href });
-      } else {
-        copyToClipboard(text);
-      }
-    }
-    
-    function updateStatsBadge(updateCount) {
-      const badge = document.getElementById('statsBadge');
-      const text = document.getElementById('statsText');
-      if (badge && text) {
-        text.textContent = `${updateCount} actualizações`;
-      }
-    }
-    
-    function updateOnlineStatus() {
-      const status = document.getElementById('onlineStatus');
-      if (status) {
-        status.querySelector('span').textContent = navigator.onLine ? 'Online' : 'Offline';
-      }
-    }
-    
-    document.getElementById('manualRefresh').addEventListener('click', () => {
-      const btn = document.getElementById('manualRefresh');
-      btn.classList.add('spinning');
-      loadUpdates(false).finally(() => {
-        setTimeout(() => btn.classList.remove('spinning'), 1000);
-      });
-    });
-    
-    // ============================================
-    // SISTEMA DE CHAT (IGUAL AO INDEX)
-    // ============================================
-    document.getElementById('openChat').addEventListener('click', () => {
-      document.getElementById('chatScreen').style.display = 'flex';
-      loadChatMessages();
-    });
-    
-    document.getElementById('closeChat').addEventListener('click', () => {
-      document.getElementById('chatScreen').style.display = 'none';
-    });
-    
-    async function loadChatMessages() {
-      const el = document.getElementById('chat-messages');
-      try {
-        const res = await fetch(`${GAS_URL}?action=chat`);
-        const data = await res.json();
-        const chat = data.chat || [];
-        chat.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-        
-        if (chat.length === 0) {
-          el.innerHTML = '<div class="waiting">Nenhuma mensagem ainda.</div>';
-          return;
-        }
-        
-        el.innerHTML = chat.map(m => {
-          const isCurrentUser = m.usuario === currentUser;
-          const msgId = m.id || Math.random().toString(36).substr(2, 9);
-          if (isCurrentUser) userMessages[msgId] = m;
-          
-          let filtered = m.mensagem.replace(/estúpida|estúpido|merda|caralho|foder|vagina|porra|puta|puto|cacete|buceta|pênis|pau|bosta|desgraçado|inferno|cu|arrombado|imbecil|idiota|otário|babaca|canalha|safado|vagabundo|nojento|lixo|droga|merdinha|caralh|fd|pta|fdp|krl|kct|buc|puta|http:|https|www.|.com|.net|.org|bit.ly|t.co|tinyurl|goo.gl|instagram.com|facebook.com|whatsapp.com|telegram.me|/gi, '');
-          
-          return `
-            <div class="message-container">
-              <div class="message ${isCurrentUser ? 'sent' : 'received'}">
-                <div class="message-sender">${m.usuario}</div>
-                <div class="message-text">${filtered}</div>
-                <div class="message-info">
-                  <span>${new Date(m.timestamp).toLocaleTimeString('pt-MZ', {hour:'2-digit',minute:'2-digit'})}</span>
-                  ${isCurrentUser ? '<span><i class="fas fa-check"></i></span>' : ''}
-                </div>
-                ${isCurrentUser ? `
-                  <div class="message-actions">
-                    <button onclick="editMessage('${msgId}')" class="action-btn edit"><i class="fas fa-edit"></i></button>
-                    <button onclick="deleteMessage('${msgId}')" class="action-btn delete"><i class="fas fa-trash"></i></button>
-                    <button onclick="copyToClipboard(\`${escapeText(m.mensagem)}\`)" class="action-btn"><i class="far fa-copy"></i></button>
-                  </div>
-                ` : `
-                  <div class="message-actions">
-                    <button onclick="replyToMessage('${m.usuario}', \`${escapeText(m.mensagem)}\`)" class="action-btn"><i class="fas fa-reply"></i></button>
-                    <button onclick="hideMessage(this)" class="action-btn"><i class="fas fa-eye-slash"></i></button>
-                    <button onclick="copyToClipboard(\`${escapeText(m.mensagem)}\`)" class="action-btn"><i class="far fa-copy"></i></button>
-                  </div>
-                `}
-              </div>
-            </div>
-          `;
-        }).join('');
-        
-        el.scrollTop = el.scrollHeight;
-      } catch (e) {
-        console.error('Erro ao carregar chat:', e);
-        el.innerHTML = '<div class="message received"><div class="message-text">Erro ao carregar chat.</div></div>';
-      }
-    }
-    
-    function replyToMessage(user, msg) {
-      document.getElementById('chat-text').value = `@${user}: ${msg.substring(0, 50)}... `;
-      document.getElementById('chat-text').focus();
-    }
-    
-    function hideMessage(btn) {
-      const container = btn.closest('.message-container');
-      container.style.opacity = '0.5';
-      setTimeout(() => { container.style.display = 'none'; }, 300);
-    }
-    
-    function editMessage(id) {
-      alert('Edição em desenvolvimento.');
-    }
-    
-    function deleteMessage(id) {
-      if (confirm('Eliminar mensagem?')) {
-        const container = document.querySelector(`[onclick*="${id}"`)?.closest('.message-container');
-        if (container) {
-          container.style.animation = 'fadeInMessage 0.3s ease reverse';
-          setTimeout(() => container.remove(), 300);
-        }
-      }
-    }
-    
-    document.getElementById('chat-send').addEventListener('click', sendChatMessage);
-    document.getElementById('chat-text').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendChatMessage();
-      }
-    });
-    
-    async function sendChatMessage() {
-      const input = document.getElementById('chat-text');
-      const btn = document.getElementById('chat-send');
-      const msg = input.value.trim();
-      
-      if (!msg) return;
-      
-      btn.classList.add('loading');
       btn.disabled = true;
-      
-      const formData = new URLSearchParams();
-      formData.append('action', 'chat');
-      formData.append('msg', msg);
-      formData.append('user', currentUser);
-      
+      loader.style.display = "block";
+      statusEl.style.display = "none";
+
       try {
-        await fetch(GAS_URL, {
+        const formData = new URLSearchParams();
+        formData.append('action', 'login');
+        formData.append('identifier', identifier);
+        formData.append('password', password);
+
+        const response = await fetch(GAS_URL, {
           method: 'POST',
           body: formData,
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
         });
-        
-        input.value = '';
-        btn.classList.remove('loading');
-        btn.disabled = false;
-        btn.style.background = '#1da851';
-        setTimeout(() => { btn.style.background = ''; }, 500);
-        
-        await loadChatMessages();
-      } catch (e) {
-        alert("Não foi possível enviar.");
-        btn.classList.remove('loading');
-        btn.disabled = false;
-      }
-    }
-    
-    // ============================================
-    // SISTEMA DE PROTEÇÃO (SOMENTE NO SIM)
-    // ============================================
-    const SISTEMA_PANICO = {
-      SENHA_UNICA: 'PANICO2024',
-      SENHA_DEV: 'STUNNER2024',
-      CONTATO: {
-        email: "acessodigital5@gmail.com",
-        whatsapp: "864920606",
-        nome: "Stunner System"
-      }
-    };
-    
-    function criarBotaoPanico() {
-      if (document.getElementById('botao-panico')) return;
-      
-      const botao = document.createElement('button');
-      botao.id = 'botao-panico';
-      botao.innerHTML = '🚨';
-      botao.title = 'BOTÃO DE PÂNICO';
-      
-      botao.onclick = function() {
-        mostrarModalSenha();
-      };
-      
-      document.body.appendChild(botao);
-    }
-    
-    function mostrarModalSenha() {
-      const modalAntigo = document.getElementById('modal-panico');
-      if (modalAntigo) modalAntigo.remove();
-      
-      const modal = document.createElement('div');
-      modal.id = 'modal-panico';
-      modal.innerHTML = `
-        <div class="modal-content">
-          <h2 style="color: #d32f2f; margin-bottom: 20px;">🔓 DESBLOQUEIO</h2>
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Salvar sessão
+          currentUser = result.user;
+          authToken = result.token;
+          localStorage.setItem('cfm_auth_token', authToken);
+          localStorage.setItem('cfm_user', JSON.stringify(currentUser));
           
-          <div style="margin-bottom: 20px; color: #555;">
-            <p>Insira a senha de emergência.</p>
-          </div>
+          // Limpar formulário
+          document.getElementById('loginIdentifier').value = '';
+          document.getElementById('loginPassword').value = '';
           
-          <input type="password" 
-                 id="senha-panico" 
-                 placeholder="Digite a senha"
-                 style="
-                     width: 100%;
-                     padding: 15px;
-                     border: 2px solid #ddd;
-                     border-radius: 8px;
-                     font-size: 16px;
-                     margin-bottom: 20px;
-                     text-align: center;
-                 ">
-          
-          <div style="display: flex; gap: 10px; justify-content: center;">
-            <button onclick="verificarSenhaPanico()"
-                    style="
-                        background: #4CAF50;
-                        color: white;
-                        border: none;
-                        padding: 12px 25px;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        font-weight: bold;
-                        flex: 1;
-                    ">
-              DESBLOQUEAR
-            </button>
-            
-            <button onclick="document.getElementById('modal-panico').remove()"
-                    style="
-                        background: #757575;
-                        color: white;
-                        border: none;
-                        padding: 12px 25px;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        flex: 1;
-                    ">
-              CANCELAR
-            </button>
-          </div>
-          
-          <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #eee;">
-            <p style="font-size: 12px; color: #333;">
-              Contato:<br>
-              <strong>${SISTEMA_PANICO.CONTATO.email}</strong><br>
-              WhatsApp: <strong>${SISTEMA_PANICO.CONTATO.whatsapp}</strong>
-            </p>
-          </div>
-        </div>
-      `;
-      
-      document.body.appendChild(modal);
-      
-      setTimeout(() => {
-        const input = document.getElementById('senha-panico');
-        if (input) input.focus();
-      }, 300);
-      
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.remove();
+          // Mostrar painel admin
+          showAdminScreen();
+          showStatus(statusEl, "✅ Login realizado com sucesso!", true);
+        } else {
+          showStatus(statusEl, "❌ " + (result.error || "Credenciais inválidas"), false);
         }
+      } catch (e) {
+        showStatus(statusEl, "⚠️ Erro de conexão: " + e.message, false);
+      } finally {
+        btn.disabled = false;
+        loader.style.display = "none";
+      }
+    }
+
+    function handleLogout() {
+      if (confirm("Tem certeza que deseja sair?")) {
+        currentUser = null;
+        authToken = null;
+        localStorage.removeItem('cfm_auth_token');
+        localStorage.removeItem('cfm_user');
+        showLoginScreen();
+      }
+    }
+
+    // ========== FUNÇÕES DE NAVEGAÇÃO ==========
+    function showLoginScreen() {
+      document.getElementById('loginScreen').classList.add('active');
+      document.getElementById('adminScreen').classList.remove('active');
+    }
+
+    function showAdminScreen() {
+      document.getElementById('loginScreen').classList.remove('active');
+      document.getElementById('adminScreen').classList.add('active');
+      
+      if (currentUser) {
+        document.getElementById('currentUserName').textContent = currentUser.fullName || currentUser.nickname;
+        document.getElementById('adminName').value = currentUser.fullName || '';
+      }
+      
+      // Mostrar primeira aba
+      showTab('sendUpdate');
+    }
+
+    function showTab(tabName) {
+      // Atualizar botões de navegação
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
       });
+      event.target.classList.add('active');
+      
+      // Esconder todas as abas
+      document.querySelectorAll('#adminScreen .screen').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Mostrar aba selecionada
+      document.getElementById(tabName + 'Tab').classList.add('active');
     }
-    
-    function verificarSenhaPanico() {
-      const senhaInput = document.getElementById('senha-panico');
-      const senha = senhaInput ? senhaInput.value.trim() : '';
-      
-      const SENHAS_VALIDAS = [
-        SISTEMA_PANICO.SENHA_UNICA,
-        SISTEMA_PANICO.SENHA_DEV,
-        'CFM-REVERT-2024',
-        'EMERGENCY-UNLOCK'
-      ];
-      
-      if (SENHAS_VALIDAS.includes(senha)) {
-        localStorage.removeItem('cfm_bloqueado');
-        localStorage.removeItem('cfm_motivo');
-        
-        const botao = document.getElementById('botao-panico');
-        if (botao) botao.remove();
-        
-        const modal = document.getElementById('modal-panico');
-        if (modal) modal.remove();
-        
-        const mensagem = document.createElement('div');
-        mensagem.style.cssText = `
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          background: #4CAF50;
-          color: white;
-          padding: 30px;
-          border-radius: 15px;
-          z-index: 100001;
-          text-align: center;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        `;
-        mensagem.innerHTML = `
-          <div style="font-size: 50px; margin-bottom: 20px;">✅</div>
-          <h3>SISTEMA DESBLOQUEADO!</h3>
-          <p>Recarregando...</p>
-        `;
-        document.body.appendChild(mensagem);
-        
-        setTimeout(() => location.reload(), 3000);
-        
-      } else {
-        if (senhaInput) {
-          senhaInput.style.borderColor = '#f44336';
-          senhaInput.style.animation = 'shake 0.5s';
-          senhaInput.value = '';
-          senhaInput.placeholder = 'Senha incorreta!';
-          
-          setTimeout(() => {
-            senhaInput.style.animation = '';
-          }, 500);
-        }
+
+    // ========== FUNÇÕES DO PAINEL ADMIN ==========
+    async function sendUpdate() {
+      if (!authToken) {
+        showStatus(document.getElementById('updateStatus'), "❌ Sessão expirada. Faça login novamente.", false);
+        handleLogout();
+        return;
       }
-    }
-    
-    function ativarProtecaoBloqueio(motivo = 'Uso não autorizado') {
-      localStorage.setItem('cfm_bloqueado', 'true');
-      localStorage.setItem('cfm_motivo', motivo);
-      aplicarBloqueio(motivo);
-    }
-    
-    function aplicarBloqueio(motivo) {
-      document.body.innerHTML = `
-        <style>
-          body {
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-            color: white;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-          }
-          .container {
-            max-width: 600px;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-          }
-          h1 {
-            color: #ff4444;
-            margin-bottom: 20px;
-          }
-          .motivo {
-            margin: 25px 0;
-            padding: 20px;
-            background: rgba(255, 68, 68, 0.1);
-            border-radius: 10px;
-            border-left: 4px solid #ff4444;
-          }
-        </style>
-        <div class="container">
-          <h1>🚫 SISTEMA BLOQUEADO</h1>
-          
-          <div class="motivo">
-            <strong>Motivo:</strong><br>
-            ${motivo}
-          </div>
-          
-          <div style="margin-top: 30px; padding: 25px; background: rgba(255, 255, 255, 0.08); border-radius: 15px;">
-            <h3>📞 PARA DESBLOQUEAR:</h3>
-            <p>Entre em contato:</p>
-            <p style="font-size: 1.1em; color: #4CAF50; margin: 15px 0;">
-              <strong>${SISTEMA_PANICO.CONTATO.email}</strong><br>
-              <strong>WhatsApp: ${SISTEMA_PANICO.CONTATO.whatsapp}</strong>
-            </p>
-          </div>
-          
-          <button id="btn-panico-bloqueio" 
-                  style="
-                      background: linear-gradient(135deg, #ff0000, #ff6b6b);
-                      color: white;
-                      border: none;
-                      padding: 15px 30px;
-                      border-radius: 50px;
-                      font-size: 1.1em;
-                      cursor: pointer;
-                      margin-top: 30px;
-                      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
-                  ">
-            🚨 BOTÃO DE PÂNICO
-          </button>
-        </div>
-      `;
-      
-      setTimeout(() => {
-        const btn = document.getElementById('btn-panico-bloqueio');
-        if (btn) {
-          btn.onclick = function() {
-            mostrarModalSenha();
-          };
-        }
-      }, 100);
-    }
-    
-    function verificarBloqueioRemoto() {
-      // Verificação remota (simplificada para exemplo)
+
+      const msg = document.getElementById('message').value.trim();
+      const adminName = document.getElementById('adminName').value.trim() || currentUser.fullName;
+      const btn = document.getElementById('updateLoader').parentElement;
+      const loader = document.getElementById('updateLoader');
+      const statusEl = document.getElementById('updateStatus');
+      const whatsappBtn = document.getElementById('whatsappBtn');
+
+      if (!msg) {
+        showStatus(statusEl, "❌ Por favor, insira a mensagem completa.", false);
+        return;
+      }
+
+      btn.disabled = true;
+      loader.style.display = "block";
+      statusEl.style.display = "none";
+
+      const formData = new URLSearchParams();
+      formData.append('action', 'admin_update');
+      formData.append('msg', msg);
+      formData.append('adminName', adminName);
+      formData.append('token', authToken);
+
       try {
-        fetch(`${GAS_URL}?action=verificar_bloqueio&t=${Date.now()}`)
-          .then(res => res.json())
-          .then(data => {
-            if (data.bloqueado && data.bloqueado === true) {
-              if (localStorage.getItem('cfm_bloqueado') !== 'true') {
-                ativarProtecaoBloqueio(data.motivo || 'Uso não autorizado');
-              }
-            }
-          })
-          .catch(e => console.log('Erro ao verificar bloqueio'));
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Salvar referência da mensagem
+          lastSavedMessage = msg;
+          lastUpdateId = result.updateId;
+          
+          showStatus(statusEl, 
+            `✅ Actualização salva com sucesso! ${result.messageId ? 'ID: ' + result.messageId : ''} 
+             <br> <span class="status-badge sent"><i class="fas fa-check"></i> Salva</span>
+             <br> <small>${result.timestamp || ''}</small>`, 
+            true);
+          
+          // Habilitar botão do WhatsApp
+          whatsappBtn.disabled = false;
+          whatsappBtn.innerHTML = `<i class="fab fa-whatsapp"></i> Compartilhar no WhatsApp <div class="loader" id="whatsappLoader"></div>`;
+          
+          // Adicionar badge de status
+          if (!statusEl.querySelector('.status-badge.shared')) {
+            statusEl.innerHTML += ' <span class="status-badge shared"><i class="fab fa-whatsapp"></i> Pronto para compartilhar</span>';
+          }
+        } else {
+          showStatus(statusEl, "❌ Erro: " + (result.error || "Falha ao enviar"), false);
+          if (result.error === 'invalid_token') {
+            handleLogout();
+          }
+        }
       } catch (e) {
-        console.log('Erro ao verificar bloqueio');
+        showStatus(statusEl, "⚠️ Erro de conexão: " + e.message, false);
+      } finally {
+        btn.disabled = false;
+        loader.style.display = "none";
       }
     }
-    
-    // ============================================
-    // INICIALIZAÇÃO DO SISTEMA
-    // ============================================
-    async function inicializarSistemaPrincipal() {
-      initializeAudio();
-      setupMenu();
-      setupScrollDetection();
+
+    async function shareToWhatsApp() {
+      const msg = document.getElementById('message').value.trim();
+      const adminName = document.getElementById('adminName').value.trim() || currentUser.fullName;
+      const btn = document.getElementById('whatsappLoader').parentElement;
+      const loader = document.getElementById('whatsappLoader');
+      const statusEl = document.getElementById('updateStatus');
       
-      // Se não tem usuário do cadastro, cria um aleatório como no index
-      if (!currentUser) {
-        currentUser = `Usuário_${Math.floor(100 + Math.random() * 900)}`;
-        localStorage.setItem('cfm_user', currentUser);
+      if (!msg) {
+        showStatus(statusEl, "❌ Não há mensagem para compartilhar.", false);
+        return;
       }
-      
-      await loadUpdates();
-      
-      setInterval(checkForNewUpdates, 15000);
-      setInterval(() => loadUpdates(true), 30000);
-      
-      window.addEventListener('online', updateOnlineStatus);
-      window.addEventListener('offline', updateOnlineStatus);
-      updateOnlineStatus();
-      setInterval(updateLastUpdateTime, 60000);
-      
-      // Verificar bloqueio
-      if (localStorage.getItem('cfm_bloqueado') === 'true') {
-        const motivo = localStorage.getItem('cfm_motivo') || 'Uso não autorizado';
-        aplicarBloqueio(motivo);
-      } else {
-        criarBotaoPanico();
-        setInterval(verificarBloqueioRemoto, 30000);
-        setTimeout(verificarBloqueioRemoto, 5000);
+
+      btn.disabled = true;
+      loader.style.display = "block";
+
+      try {
+        // Formatar mensagem para WhatsApp
+        const whatsappMessage = encodeURIComponent(
+          `*ATUALIZAÇÃO OFICIAL - CFM*\n` +
+          `*De:* ${adminName}\n` +
+          `*Data:* ${new Date().toLocaleString('pt-PT')}\n\n` +
+          `${msg}\n\n` +
+          `_Enviado via Painel Administrativo CFM_`
+        );
+
+        // Criar URL do WhatsApp
+        const whatsappUrl = `https://wa.me/?text=${whatsappMessage}`;
+        
+        // Registrar compartilhamento no GAS
+        if (authToken && lastUpdateId) {
+          const formData = new URLSearchParams();
+          formData.append('action', 'log_whatsapp_share');
+          formData.append('updateId', lastUpdateId);
+          formData.append('token', authToken);
+          
+          await fetch(GAS_URL, {
+            method: 'POST',
+            body: formData
+          });
+        }
+        
+        // Abrir WhatsApp em nova aba
+        window.open(whatsappUrl, '_blank');
+        
+        // Atualizar status
+        const statusHtml = statusEl.innerHTML.replace('status-badge shared', 'status-badge sent');
+        statusEl.innerHTML = statusHtml + ' <span class="status-badge shared"><i class="fab fa-whatsapp"></i> Compartilhado</span>';
+        
+        // Animação de sucesso
+        btn.classList.add('pulse');
+        setTimeout(() => {
+          btn.classList.remove('pulse');
+        }, 2000);
+        
+      } catch (e) {
+        showStatus(statusEl, "⚠️ Erro ao preparar compartilhamento: " + e.message, false);
+      } finally {
+        btn.disabled = false;
+        loader.style.display = "none";
+        btn.innerHTML = `<i class="fab fa-whatsapp"></i> Compartilhar no WhatsApp <div class="loader" id="whatsappLoader"></div>`;
       }
     }
-    
-    // INICIALIZAÇÃO AO CARREGAR A PÁGINA
-    document.addEventListener('DOMContentLoaded', async () => {
-      const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+    async function createUser() {
+      if (!authToken) {
+        showStatus(document.getElementById('createUserStatus'), "❌ Sessão expirada. Faça login novamente.", false);
+        handleLogout();
+        return;
+      }
+
+      const phone = document.getElementById('userPhone').value.trim();
+      const fullName = document.getElementById('userFullName').value.trim();
+      const nickname = document.getElementById('userNickname').value.trim();
+      const email = document.getElementById('userEmail').value.trim();
+      const password = document.getElementById('userPassword').value.trim();
+      const role = document.getElementById('userRole').value;
       
-      if (usuario && usuario.nome && usuario.telefone) {
-        currentUser = criarIdUsuario(usuario.nome, usuario.telefone);
-        console.log("Usuário cadastrado:", currentUser);
-        entrarDireto();
-      } else {
-        console.log("Usuário não cadastrado - mostra tela de cadastro");
+      const btn = document.getElementById('createUserLoader').parentElement;
+      const loader = document.getElementById('createUserLoader');
+      const statusEl = document.getElementById('createUserStatus');
+
+      // Validações
+      if (!phone || !fullName || !email || !password) {
+        showStatus(statusEl, "❌ Por favor, preencha todos os campos obrigatórios", false);
+        return;
       }
-    });
-    
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) {
-        checkForNewUpdates();
-        verificarBloqueioRemoto();
+      
+      if (!/^\d{9}$/.test(phone)) {
+        showStatus(statusEl, "❌ Número de telefone deve ter 9 dígitos", false);
+        return;
       }
-    });
+      
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showStatus(statusEl, "❌ Email inválido", false);
+        return;
+      }
+      
+      if (password.length > 6 || !/^[a-zA-Z0-9]+$/.test(password)) {
+        showStatus(statusEl, "❌ Senha deve ter até 6 caracteres (apenas letras e números)", false);
+        return;
+      }
+
+      btn.disabled = true;
+      loader.style.display = "block";
+      statusEl.style.display = "none";
+
+      const formData = new URLSearchParams();
+      formData.append('action', 'create_user');
+      formData.append('phone', phone);
+      formData.append('fullName', fullName);
+      formData.append('nickname', nickname);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('role', role);
+      formData.append('token', authToken);
+      formData.append('createdBy', currentUser.email);
+
+      try {
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showStatus(statusEl, 
+            `✅ Usuário criado com sucesso! 
+             <br> <strong>${fullName}</strong> (${email})
+             <br> <small>Credenciais enviadas para o email.</small>`, 
+            true);
+          
+          // Limpar formulário
+          document.getElementById('userPhone').value = '';
+          document.getElementById('userFullName').value = '';
+          document.getElementById('userNickname').value = '';
+          document.getElementById('userEmail').value = '';
+          document.getElementById('userPassword').value = '';
+          document.getElementById('userRole').value = 'user';
+          
+          // Atualizar lista de usuários
+          loadUsers();
+        } else {
+          showStatus(statusEl, "❌ Erro: " + (result.error || "Falha ao criar usuário"), false);
+          if (result.error === 'invalid_token') {
+            handleLogout();
+          }
+        }
+      } catch (e) {
+        showStatus(statusEl, "⚠️ Erro de conexão: " + e.message, false);
+      } finally {
+        btn.disabled = false;
+        loader.style.display = "none";
+      }
+    }
+
+    async function loadUsers() {
+      if (!authToken) return;
+
+      const loader = document.getElementById('usersLoader');
+      const statusEl = document.getElementById('usersStatus');
+      const usersList = document.getElementById('usersList');
+      const btn = loader.parentElement;
+
+      btn.disabled = true;
+      loader.style.display = "block";
+      statusEl.style.display = "none";
+
+      try {
+        const formData = new URLSearchParams();
+        formData.append('action', 'get_users');
+        formData.append('token', authToken);
+
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          const users = result.users || [];
+          usersList.innerHTML = '';
+          
+          if (users.length === 0) {
+            usersList.innerHTML = `
+              <div class="user-item">
+                <div class="user-info">
+                  <h4><i class="fas fa-user-slash"></i> Nenhum usuário encontrado</h4>
+                  <p>Crie o primeiro usuário na aba "Criar Usuário"</p>
+                </div>
+              </div>
+            `;
+          } else {
+            users.forEach(user => {
+              const userItem = document.createElement('div');
+              userItem.className = 'user-item';
+              
+              const roleClass = user.role === 'admin' ? 'admin' : '';
+              const roleIcon = user.role === 'admin' ? 'fa-user-shield' : 'fa-user';
+              
+              userItem.innerHTML = `
+                <div class="user-info">
+                  <h4><i class="fas ${roleIcon}"></i> ${user.fullName} ${user.nickname ? `<span style="color: #666;">(${user.nickname})</span>` : ''}</h4>
+                  <p><i class="fas fa-envelope"></i> ${user.email} • <i class="fas fa-phone"></i> ${user.phone}</p>
+                  <small><i class="fas fa-calendar"></i> Criado em: ${user.createdAt || 'N/A'} por ${user.createdBy || 'sistema'}</small>
+                </div>
+                <div class="user-role ${roleClass}">
+                  <i class="fas ${roleIcon}"></i> ${user.role === 'admin' ? 'ADMIN' : 'USUÁRIO'}
+                </div>
+              `;
+              
+              usersList.appendChild(userItem);
+            });
+          }
+        } else {
+          showStatus(statusEl, "❌ Erro ao carregar usuários: " + (result.error || ""), false);
+          if (result.error === 'invalid_token') {
+            handleLogout();
+          }
+        }
+      } catch (e) {
+        showStatus(statusEl, "⚠️ Erro de conexão: " + e.message, false);
+      } finally {
+        btn.disabled = false;
+        loader.style.display = "none";
+      }
+    }
+
+    // ========== FUNÇÃO AUXILIAR ==========
+    function showStatus(element, text, success) {
+      element.innerHTML = text;
+      element.className = "status " + (success ? "success" : "error");
+      element.style.display = "block";
+      
+      // Auto-esconder mensagens de sucesso
+      if (success) {
+        setTimeout(() => {
+          if (element.style.opacity !== '0') {
+            element.style.opacity = '1';
+            setTimeout(() => {
+              element.style.opacity = '0';
+              setTimeout(() => {
+                element.style.display = "none";
+                element.style.opacity = '1';
+              }, 300);
+            }, 5000);
+          }
+        }, 100);
+      }
+    }
   </script>
 </body>
 </html>
