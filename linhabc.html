@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão RailTrack - Beira/Chimoio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-light: #8b5cf6;
+      --secondary: #10b981;
+      --light: #f8fafc;
+      --dark: #1e293b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --radius: 10px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+    
+    .cabecalho {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      position: relative;
+    }
+    
+    .botao-voltar {
+      position: absolute;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+    
+    .botao-voltar:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateX(-3px);
+    }
+    
+    .titulo-cabecalho {
+      font-size: 1.4rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .container-principal {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    
+    .cartao {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .cartao h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
+    
+    .grupo-formulario {
+      margin-bottom: 24px;
+    }
+    
+    .rotulo-formulario {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #334155;
+    }
+    
+    .campo-formulario {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      background: #f8fafc;
+    }
+    
+    .campo-formulario:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+      background: white;
+    }
+    
+    textarea.campo-formulario {
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    
+    .contador-caracteres {
+      text-align: right;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    
+    .contador-caracteres.alerta {
+      color: #f59e0b;
+    }
+    
+    .contador-caracteres.perigo {
+      color: #ef4444;
+    }
+    
+    .botao-principal {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .botao-principal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(124, 58, 237, 0.2);
+    }
+    
+    .botao-principal:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    
+    .botao-whatsapp {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      margin-top: 12px;
+    }
+    
+    .botao-whatsapp:hover {
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+    }
+    
+    .mensagem-status {
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      animation: surgir 0.3s ease;
+    }
+    
+    .mensagem-sucesso {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    
+    .mensagem-erro {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    
+    .lista-atualizacoes {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 15px;
+      background: #f8fafc;
+    }
+    
+    .item-atualizacao {
+      padding: 18px;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    
+    .item-atualizacao:hover {
+      background: #f1f5f9;
+      transform: translateX(5px);
+    }
+    
+    .item-atualizacao:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    
+    .cabecalho-atualizacao {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .autor-atualizacao {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .hora-atualizacao {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+    
+    .conteudo-atualizacao {
+      color: #334155;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    
+    .rodape {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+    
+    @media (max-width: 768px) {
+      .container-principal {
+        padding: 0 15px;
+      }
+      
+      .cartao {
+        padding: 20px;
+      }
+      
+      .titulo-cabecalho {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cabecalho">
+    <button class="botao-voltar" onclick="window.location.href='index.html'">
+      <i class="fas fa-arrow-left"></i> Voltar
+    </button>
+    <h1 class="titulo-cabecalho">
+      <i class="fas fa-train"></i> Gestão RailTrack - Beira/Chimoio
+    </h1>
+  </div>
+  
+  <div class="container-principal">
+    <div class="cartao">
+      <h2><i class="fas fa-paper-plane"></i> Publicar Atualização</h2>
+      
+      <div class="grupo-formulario">
+        <label class="rotulo-formulario">Seu Nome (como será exibido)</label>
+        <input type="text" class="campo-formulario" id="campoNome" 
+               placeholder="Ex: Gestão RailTrack, Chefe de Estação, etc.">
+      </div>
+      
+      <div class="grupo-formulario">
+        <label class="rotulo-formulario">Conteúdo da Atualização</label>
+        <textarea class="campo-formulario" id="campoConteudo" 
+                  placeholder="Informe detalhes sobre horários, atrasos, cancelamentos..."></textarea>
+        <div class="contador-caracteres" id="contadorCaracteres">
+          <span id="contadorNumero">0</span> caracteres
+        </div>
+      </div>
+      
+      <button class="botao-principal" id="botaoPublicar" onclick="publicarAtualizacao()">
+        <i class="fas fa-cloud-upload-alt"></i>
+        Publicar no Sistema
+      </button>
+      
+      <button class="botao-principal botao-whatsapp" id="botaoWhatsApp" onclick="compartilharWhatsApp()" disabled>
+        <i class="fab fa-whatsapp"></i>
+        Compartilhar no WhatsApp
+      </button>
+      
+      <div class="mensagem-status mensagem-sucesso" id="mensagemSucesso">
+        <i class="fas fa-check-circle"></i>
+        <span>Atualização publicada com sucesso!</span>
+      </div>
+      
+      <div class="mensagem-status mensagem-erro" id="mensagemErro">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="textoErro">Erro ao publicar atualização</span>
+      </div>
+    </div>
+    
+    <div class="cartao">
+      <h2><i class="fas fa-history"></i> Últimas Publicações</h2>
+      <div id="listaAtualizacoes" class="lista-atualizacoes">
+        <div style="text-align: center; padding: 30px; color: #64748b;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 10px;"></i>
+          <p>Carregando atualizações...</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="rodape">
+      <p>🚄 Sistema RailTrack - Rota Beira/Chimoio</p>
+      <p><small>© 2024 RailTrack - Todos os direitos reservados</small></p>
+    </div>
+  </div>
+
+  <script>
+    // ============================================
+    // CONFIGURAÇÕES DA ROTA
+    // ============================================
+    const URL_API = "https://script.google.com/macros/s/AKfycbyQV8I5Ps7fgjQ-d5u_XfVVgKkB8n8O2pi6tfkFUPJY9lGR9ZLZOlhJwO99Z936dOVc/exec";
+    const ID_ROTA = 'tr_ch';
+    const NOME_ROTA = 'Beira - Chimoio';
+    const SIMBOLO_ROTA = '🚄';
+    
+    let ultimaMensagemSalva = '';
+    
+    // ============================================
+    // FUNÇÕES DE UTILIDADE
+    // ============================================
+    function mostrarMensagem(tipo, texto = '') {
+      const elementoSucesso = document.getElementById('mensagemSucesso');
+      const elementoErro = document.getElementById('mensagemErro');
+      const textoErro = document.getElementById('textoErro');
+      
+      elementoSucesso.style.display = 'none';
+      elementoErro.style.display = 'none';
+      
+      if (tipo === 'sucesso') {
+        elementoSucesso.style.display = 'flex';
+        setTimeout(() => {
+          elementoSucesso.style.display = 'none';
+        }, 5000);
+      } else if (tipo === 'erro') {
+        textoErro.textContent = texto;
+        elementoErro.style.display = 'flex';
+      }
+    }
+    
+    // ============================================
+    // CONTADOR DE CARACTERES
+    // ============================================
+    document.getElementById('campoConteudo').addEventListener('input', function() {
+      const quantidade = this.value.length;
+      const contador = document.getElementById('contadorCaracteres');
+      const numero = document.getElementById('contadorNumero');
+      
+      numero.textContent = quantidade;
+      contador.className = 'contador-caracteres';
+      
+      if (quantidade > 500) contador.classList.add('alerta');
+      if (quantidade > 1000) contador.classList.add('perigo');
+      
+      const botaoWhatsApp = document.getElementById('botaoWhatsApp');
+      botaoWhatsApp.disabled = quantidade === 0;
+    });
+    
+    // ============================================
+    // PUBLICAR ATUALIZAÇÃO
+    // ============================================
+    async function publicarAtualizacao() {
+      const nome = document.getElementById('campoNome').value.trim();
+      const conteudo = document.getElementById('campoConteudo').value.trim();
+      const botaoPublicar = document.getElementById('botaoPublicar');
+      
+      if (!nome) {
+        mostrarMensagem('erro', 'Informe seu nome');
+        return;
+      }
+      
+      if (!conteudo) {
+        mostrarMensagem('erro', 'Digite o conteúdo da atualização');
+        return;
+      }
+      
+      const textoOriginal = botaoPublicar.innerHTML;
+      botaoPublicar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
+      botaoPublicar.disabled = true;
+      
+      try {
+        const dadosFormulario = new URLSearchParams();
+        dadosFormulario.append('acao', 'publicar_atualizacao');
+        dadosFormulario.append('rota', ID_ROTA);
+        dadosFormulario.append('remetente', nome);
+        dadosFormulario.append('conteudo', conteudo);
+        
+        const resposta = await fetch(URL_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          },
+          body: dadosFormulario.toString()
+        });
+        
+        const resultado = await resposta.json();
+        
+        if (resultado.sucesso) {
+          ultimaMensagemSalva = conteudo;
+          
+          document.getElementById('botaoWhatsApp').disabled = false;
+          mostrarMensagem('sucesso');
+          
+          document.getElementById('campoConteudo').value = '';
+          document.getElementById('contadorNumero').textContent = '0';
+          document.getElementById('contadorCaracteres').className = 'contador-caracteres';
+          
+          carregarAtualizacoesRecentes();
+          
+        } else {
+          mostrarMensagem('erro', resultado.erro || 'Falha na publicação');
+        }
+        
+      } catch (erro) {
+        console.error('Erro:', erro);
+        mostrarMensagem('erro', 'Erro de conexão com o servidor');
+      } finally {
+        botaoPublicar.innerHTML = textoOriginal;
+        botaoPublicar.disabled = false;
+      }
+    }
+    
+    // ============================================
+    // COMPARTILHAR NO WHATSAPP
+    // ============================================
+    function compartilharWhatsApp() {
+      const nome = document.getElementById('campoNome').value.trim() || 'Gestão RailTrack';
+      const conteudo = ultimaMensagemSalva || document.getElementById('campoConteudo').value.trim();
+      
+      if (!conteudo) {
+        mostrarMensagem('erro', 'Não há conteúdo para compartilhar');
+        return;
+      }
+      
+      const mensagemFormatada = encodeURIComponent(
+        `*ATUALIZAÇÃO RAILTRACK ${SIMBOLO_ROTA}*\n` +
+        `*Rota:* ${NOME_ROTA}\n` +
+        `*De:* ${nome}\n` +
+        `*Data:* ${new Date().toLocaleString('pt-PT')}\n\n` +
+        `${conteudo}\n\n` +
+        `_Compartilhe com outros viajantes!_`
+      );
+      
+      window.open(`https://wa.me/?text=${mensagemFormatada}`, '_blank');
+    }
+    
+    // ============================================
+    // CARREGAR ATUALIZAÇÕES RECENTES
+    // ============================================
+    async function carregarAtualizacoesRecentes() {
+      const listaAtualizacoes = document.getElementById('listaAtualizacoes');
+      
+      try {
+        const resposta = await fetch(`${URL_API}?acao=atualizacoes&rota=${ID_ROTA}&t=${Date.now()}`);
+        const dados = await resposta.json();
+        
+        if (dados.sucesso && dados.atualizacoes && dados.atualizacoes.length > 0) {
+          const atualizacoes = dados.atualizacoes.sort((a, b) => 
+            new Date(b.data_hora) - new Date(a.data_hora)
+          );
+          
+          const recentes = atualizacoes.slice(0, 10);
+          
+          listaAtualizacoes.innerHTML = recentes.map(atualizacao => {
+            const hora = new Date(atualizacao.data_hora).toLocaleString('pt-PT', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            
+            return `
+              <div class="item-atualizacao">
+                <div class="cabecalho-atualizacao">
+                  <span class="autor-atualizacao">${atualizacao.remetente}</span>
+                  <span class="hora-atualizacao">${hora}</span>
+                </div>
+                <div class="conteudo-atualizacao">${atualizacao.conteudo}</div>
+              </div>
+            `;
+          }).join('');
+          
+        } else {
+          listaAtualizacoes.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #64748b;">
+              <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 15px;"></i>
+              <p>Nenhuma atualização publicada</p>
+              <p><small>Seja o primeiro a publicar uma atualização!</small></p>
+            </div>
+          `;
+        }
+        
+      } catch (erro) {
+        console.error('Erro ao carregar atualizações:', erro);
+        listaAtualizacoes.innerHTML = `
+          <div style="text-align: center; padding: 40px; color: #ef4444;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 15px;"></i>
+            <p>Erro ao carregar atualizações</p>
+            <p><small>${erro.message}</small></p>
+          </div>
+        `;
+      }
+    }
+    
+    // ============================================
+    // INICIALIZAÇÃO
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('=== GESTÃO RAILTRACK - BEIRA/CHIMOIO INICIADA ===');
+      
+      const nomeSalvo = localStorage.getItem('railtrack_nome_gestor');
+      if (nomeSalvo) {
+        document.getElementById('campoNome').value = nomeSalvo;
+      }
+      
+      document.getElementById('campoNome').addEventListener('input', function() {
+        localStorage.setItem('railtrack_nome_gestor', this.value);
+      });
+      
+      carregarAtualizacoesRecentes();
+      
+      setInterval(carregarAtualizacoesRecentes, 30000);
+    });
+  </script>
+</body>
+</html>
