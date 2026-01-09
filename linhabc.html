@@ -297,7 +297,7 @@
     }
     
     /* ============================================
-       BOTÕES
+       BOTÕES NO CARTAO
        ============================================ */
     .botoes-acao {
       display: grid;
@@ -371,29 +371,58 @@
     }
     
     /* ============================================
-       CONTEINER DE MENSAGEM
+       CONTEINER DE CONFIRMAÇÃO FIXO
        ============================================ */
-    .conteiner-mensagem {
+    .conteiner-confirmacao {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-      max-width: 400px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      z-index: 2000;
+      max-width: 500px;
+      width: 90%;
       display: none;
-      animation: slideInRight 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      animation: popupShow 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
     }
     
-    .mensagem-conteudo {
+    @keyframes popupShow {
+      0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1999;
+      display: none;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+    
+    .cartao-confirmacao {
       background: white;
       border-radius: var(--radius-lg);
-      padding: 25px;
       box-shadow: var(--shadow-xl);
-      border-left: 5px solid var(--success);
+      padding: 30px;
       position: relative;
       overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
     }
     
-    .mensagem-conteudo::before {
+    .cartao-confirmacao::before {
       content: '';
       position: absolute;
       top: 0;
@@ -403,40 +432,58 @@
       background: var(--gradient-success);
     }
     
-    .cabecalho-mensagem {
+    .cabecalho-confirmacao {
       display: flex;
       align-items: center;
       gap: 15px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
     
-    .icone-mensagem {
-      width: 50px;
-      height: 50px;
+    .icone-confirmacao {
+      width: 60px;
+      height: 60px;
       background: var(--gradient-success);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       animation: pulse 2s infinite;
+      flex-shrink: 0;
     }
     
-    .titulo-mensagem {
-      font-size: 1.2rem;
+    .titulo-confirmacao {
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--dark);
       flex: 1;
     }
     
-    .corpo-mensagem {
+    .badge-sucesso {
+      background: var(--success);
+      color: white;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 20px;
+      align-self: flex-start;
+    }
+    
+    .conteudo-confirmacao {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 25px;
+    }
+    
+    .mensagem-confirmacao {
       background: var(--border-light);
       padding: 20px;
       border-radius: var(--radius-md);
-      margin-bottom: 20px;
       border: 1px solid var(--border);
-      position: relative;
+      margin-bottom: 20px;
     }
     
     .texto-mensagem {
@@ -444,34 +491,49 @@
       line-height: 1.6;
       white-space: pre-wrap;
       font-weight: 500;
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 5px;
     }
     
-    .badge-sucesso {
-      position: absolute;
-      top: -10px;
-      right: 20px;
-      background: var(--success);
-      color: white;
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
+    .texto-mensagem::-webkit-scrollbar {
+      width: 4px;
     }
     
-    .tempo-restante {
+    .texto-mensagem::-webkit-scrollbar-track {
+      background: var(--border);
+      border-radius: 2px;
+    }
+    
+    .texto-mensagem::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    
+    .contador-tempo {
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: var(--dark-light);
-      font-size: 0.9rem;
-      margin-bottom: 15px;
+      gap: 10px;
+      margin-bottom: 20px;
+      background: var(--border-light);
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+    }
+    
+    .contador-tempo i {
+      color: var(--success);
+    }
+    
+    .texto-contador {
+      font-weight: 600;
+      color: var(--dark);
     }
     
     .barra-tempo {
       flex: 1;
-      height: 4px;
+      height: 6px;
       background: var(--border);
-      border-radius: 2px;
+      border-radius: 3px;
       overflow: hidden;
     }
     
@@ -480,63 +542,60 @@
       background: var(--success);
       width: 100%;
       transition: width 1s linear;
-      border-radius: 2px;
+      border-radius: 3px;
     }
     
-    .rodape-mensagem {
+    /* Botões sempre visíveis */
+    .rodape-confirmacao {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
       gap: 15px;
+      margin-top: 10px;
+      flex-wrap: wrap;
     }
     
-    .botao-fechar-mensagem {
+    .botao-fechar-confirmacao {
+      flex: 1;
       background: var(--light);
       border: 2px solid var(--border);
       color: var(--dark-light);
-      padding: 10px 20px;
+      padding: 14px 20px;
       border-radius: var(--radius-md);
       cursor: pointer;
       transition: var(--transition);
-      font-weight: 500;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 120px;
     }
     
-    .botao-fechar-mensagem:hover {
+    .botao-fechar-confirmacao:hover {
       background: var(--border);
       color: var(--dark);
     }
     
-    .botao-compartilhar-mensagem {
+    .botao-compartilhar-confirmacao {
+      flex: 2;
       background: var(--whatsapp);
       color: white;
       border: none;
-      padding: 10px 25px;
+      padding: 14px 20px;
       border-radius: var(--radius-md);
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      gap: 12px;
       font-weight: 600;
       transition: var(--transition);
-      flex: 1;
-      justify-content: center;
+      min-width: 200px;
     }
     
-    .botao-compartilhar-mensagem:hover {
+    .botao-compartilhar-confirmacao:hover {
       background: #1da851;
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-    }
-    
-    @keyframes slideInRight {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
     }
     
     @keyframes pulse {
@@ -700,10 +759,23 @@
         padding: 25px;
       }
       
-      .conteiner-mensagem {
-        left: 15px;
-        right: 15px;
-        max-width: none;
+      .conteiner-confirmacao {
+        width: 95%;
+        max-width: 95%;
+      }
+      
+      .cartao-confirmacao {
+        padding: 25px 20px;
+      }
+      
+      .rodape-confirmacao {
+        flex-direction: column;
+      }
+      
+      .botao-fechar-confirmacao,
+      .botao-compartilhar-confirmacao {
+        flex: none;
+        width: 100%;
       }
     }
     
@@ -724,6 +796,24 @@
       .botao-principal {
         padding: 15px 20px;
         font-size: 1rem;
+      }
+      
+      .cabecalho-confirmacao {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+      
+      .titulo-confirmacao {
+        text-align: center;
+      }
+      
+      .conteudo-confirmacao {
+        max-height: 50vh;
+      }
+      
+      .texto-mensagem {
+        max-height: 150px;
       }
     }
   </style>
@@ -801,35 +891,40 @@
     </div>
   </main>
   
-  <!-- Conteiner de Mensagem (Aparece após publicação) -->
-  <div class="conteiner-mensagem" id="conteinerMensagem">
-    <div class="mensagem-conteudo">
+  <!-- Overlay para escurecer fundo -->
+  <div class="overlay" id="overlay" onclick="fecharConfirmacao()"></div>
+  
+  <!-- Conteiner de Confirmação (Aparece após publicação) -->
+  <div class="conteiner-confirmacao" id="conteinerConfirmacao">
+    <div class="cartao-confirmacao">
       <div class="badge-sucesso">PUBLICADO COM SUCESSO</div>
       
-      <div class="cabecalho-mensagem">
-        <div class="icone-mensagem">
+      <div class="cabecalho-confirmacao">
+        <div class="icone-confirmacao">
           <i class="fas fa-check"></i>
         </div>
-        <div class="titulo-mensagem">Actualização Enviada!</div>
+        <div class="titulo-confirmacao">Actualização Enviada!</div>
       </div>
       
-      <div class="corpo-mensagem">
-        <div class="texto-mensagem" id="textoMensagemPublicada"></div>
-      </div>
-      
-      <div class="tempo-restante">
-        <i class="fas fa-clock"></i>
-        <span id="textoTempoRestante">Tempo restante: 30s</span>
-        <div class="barra-tempo">
-          <div class="progresso-tempo" id="progressoTempo"></div>
+      <div class="conteudo-confirmacao">
+        <div class="mensagem-confirmacao">
+          <div class="texto-mensagem" id="textoMensagemConfirmacao"></div>
+        </div>
+        
+        <div class="contador-tempo">
+          <i class="fas fa-clock"></i>
+          <span class="texto-contador" id="textoContadorTempo">Fechando em 30 segundos</span>
+          <div class="barra-tempo">
+            <div class="progresso-tempo" id="progressoTempo"></div>
+          </div>
         </div>
       </div>
       
-      <div class="rodape-mensagem">
-        <button class="botao-fechar-mensagem" onclick="fecharMensagem()">
-          <i class="fas fa-times"></i> Fechar
+      <div class="rodape-confirmacao">
+        <button class="botao-fechar-confirmacao" onclick="fecharConfirmacao()">
+          <i class="fas fa-times"></i> Fechar Agora
         </button>
-        <button class="botao-compartilhar-mensagem" onclick="compartilharMensagemWhatsApp()">
+        <button class="botao-compartilhar-confirmacao" onclick="compartilharConfirmacaoWhatsApp()">
           <i class="fab fa-whatsapp"></i> Compartilhar via WhatsApp
         </button>
       </div>
@@ -840,7 +935,7 @@
   <footer class="rodape">
     <div class="logo-rodape">RailTrack</div>
     <p>Sistema de Gestão Ferroviária © 2025 - Todos os direitos reservados</p>
-    <p>🚄 Linha Beira/Chimoio - Atualizações em tempo real</p>
+    <p>🚄 Linha Beira/Chimoio - Actualizações em tempo real</p>
   </footer>
 
   <script>
@@ -971,7 +1066,7 @@
             id: Date.now()
           };
           
-          mostrarConteinerMensagem();
+          mostrarConfirmacao();
           
           document.getElementById('campoConteudo').value = '';
           atualizarContadorCaracteres();
@@ -994,19 +1089,24 @@
     }
     
     // ============================================
-    // MOSTRAR CONTENER DE MENSAGEM
+    // MOSTRAR CONFIRMAÇÃO (NOVO DESIGN)
     // ============================================
-    function mostrarConteinerMensagem() {
-      const conteiner = document.getElementById('conteinerMensagem');
-      const textoMensagem = document.getElementById('textoMensagemPublicada');
-      const textoTempo = document.getElementById('textoTempoRestante');
+    function mostrarConfirmacao() {
+      const overlay = document.getElementById('overlay');
+      const conteiner = document.getElementById('conteinerConfirmacao');
+      const textoMensagem = document.getElementById('textoMensagemConfirmacao');
+      const textoContador = document.getElementById('textoContadorTempo');
       const progressoTempo = document.getElementById('progressoTempo');
       
       textoMensagem.textContent = ultimaMensagemSalva;
       
+      overlay.style.display = 'block';
       conteiner.style.display = 'block';
+      
+      document.body.style.overflow = 'hidden';
+      
       tempoRestante = 30;
-      textoTempo.textContent = `Tempo restante: ${tempoRestante}s`;
+      textoContador.textContent = `Fechando em ${tempoRestante} segundos`;
       progressoTempo.style.width = '100%';
       
       if (intervaloContador) {
@@ -1015,11 +1115,11 @@
       
       intervaloContador = setInterval(() => {
         tempoRestante--;
-        textoTempo.textContent = `Tempo restante: ${tempoRestante}s`;
+        textoContador.textContent = `Fechando em ${tempoRestante} segundos`;
         progressoTempo.style.width = `${(tempoRestante / 30) * 100}%`;
         
         if (tempoRestante <= 0) {
-          fecharMensagem();
+          fecharConfirmacao();
         }
       }, 1000);
       
@@ -1027,11 +1127,16 @@
     }
     
     // ============================================
-    // FECHAR MENSAGEM
+    // FECHAR CONFIRMAÇÃO
     // ============================================
-    function fecharMensagem() {
-      const conteiner = document.getElementById('conteinerMensagem');
+    function fecharConfirmacao() {
+      const overlay = document.getElementById('overlay');
+      const conteiner = document.getElementById('conteinerConfirmacao');
+      
+      overlay.style.display = 'none';
       conteiner.style.display = 'none';
+      
+      document.body.style.overflow = 'auto';
       
       if (intervaloContador) {
         clearInterval(intervaloContador);
@@ -1040,9 +1145,9 @@
     }
     
     // ============================================
-    // COMPARTILHAR MENSAGEM VIA WHATSAPP
+    // COMPARTILHAR CONFIRMAÇÃO VIA WHATSAPP
     // ============================================
-    function compartilharMensagemWhatsApp() {
+    function compartilharConfirmacaoWhatsApp() {
       if (!ultimaMensagemSalva) {
         mostrarMensagemErro('Não há mensagem para compartilhar');
         return;
@@ -1051,7 +1156,7 @@
       const nome = document.getElementById('campoNome').value.trim() || 'Gestão RailTrack';
       
       const mensagemFormatada = encodeURIComponent(
-        `*ATUALIZAÇÃO RAILTRACK ${SIMBOLO_ROTA}*\n` +
+        `*ACTUALIZAÇÃO RAILTRACK ${SIMBOLO_ROTA}*\n` +
         `*Rota:* ${NOME_ROTA}\n` +
         `*De:* 🛡️ ADM ${nome}\n` +
         `*Data:* ${new Date().toLocaleString('pt-PT')}\n` +
@@ -1062,7 +1167,7 @@
       
       window.open(`https://wa.me/?text=${mensagemFormatada}`, '_blank');
       
-      fecharMensagem();
+      fecharConfirmacao();
     }
     
     // ============================================
@@ -1078,7 +1183,7 @@
       }
       
       const mensagemFormatada = encodeURIComponent(
-        `*ATUALIZAÇÃO RAILTRACK ${SIMBOLO_ROTA}*\n` +
+        `*ACTUALIZAÇÃO RAILTRACK ${SIMBOLO_ROTA}*\n` +
         `*Rota:* ${NOME_ROTA}\n` +
         `*De:* ${nome}\n` +
         `*Data:* ${new Date().toLocaleString('pt-PT')}\n\n` +
@@ -1090,7 +1195,7 @@
     }
     
     // ============================================
-    // CARREGAR ATUALIZAÇÕES RECENTES
+    // CARREGAR ACTUALIZAÇÕES RECENTES
     // ============================================
     async function carregarAtualizacoesRecentes() {
       const listaAtualizacoes = document.getElementById('listaAtualizacoes');
@@ -1133,18 +1238,18 @@
           listaAtualizacoes.innerHTML = `
             <div class="estado-carregamento">
               <i class="fas fa-inbox"></i>
-              <p>Nenhuma atualização publicada ainda</p>
-              <p><small>Seja o primeiro a publicar uma atualização!</small></p>
+              <p>Nenhuma actualização publicada ainda</p>
+              <p><small>Seja o primeiro a publicar uma actualização!</small></p>
             </div>
           `;
         }
         
       } catch (erro) {
-        console.error('Erro ao carregar atualizações:', erro);
+        console.error('Erro ao carregar actualizações:', erro);
         listaAtualizacoes.innerHTML = `
           <div class="estado-carregamento">
             <i class="fas fa-exclamation-triangle" style="color: var(--error);"></i>
-            <p>Erro ao carregar atualizações</p>
+            <p>Erro ao carregar actualizações</p>
             <p><small>${erro.message}</small></p>
           </div>
         `;
@@ -1155,20 +1260,21 @@
     // MENSAGENS DE ERRO
     // ============================================
     function mostrarMensagemErro(texto) {
-      const conteiner = document.getElementById('conteinerMensagem');
-      const icone = conteiner.querySelector('.icone-mensagem');
-      const titulo = conteiner.querySelector('.titulo-mensagem');
+      const overlay = document.getElementById('overlay');
+      const conteiner = document.getElementById('conteinerConfirmacao');
+      const icone = conteiner.querySelector('.icone-confirmacao');
+      const titulo = conteiner.querySelector('.titulo-confirmacao');
       const badge = conteiner.querySelector('.badge-sucesso');
-      const conteudo = conteiner.querySelector('.corpo-mensagem');
+      const textoMensagem = document.getElementById('textoMensagemConfirmacao');
       
       icone.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
       icone.style.background = 'linear-gradient(135deg, var(--error) 0%, #dc2626 100%)';
       titulo.textContent = 'Erro na Publicação';
       badge.textContent = 'ERRO';
       badge.style.background = 'var(--error)';
-      conteudo.innerHTML = `<div class="texto-mensagem">${texto}</div>`;
+      textoMensagem.textContent = texto;
       
-      mostrarConteinerMensagem();
+      mostrarConfirmacao();
     }
   </script>
 </body>
